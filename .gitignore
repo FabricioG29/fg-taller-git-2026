@@ -1,0 +1,46 @@
+# --- Maven ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- Java ---
+*.class
+*.log
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+hs_err_pid*
+replay_pid*
+
+# --- IntelliJ ---
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# --- VS Code / Eclipse / NetBeans ---
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+nbproject/
+build/
+
+# --- SO / VM ---
+.DS_Store
+Thumbs.db
+*.vdi
+*.vmdk
+*.ova
+*.qcow2
+
+# --- Spring starter ---
+HELP.md
