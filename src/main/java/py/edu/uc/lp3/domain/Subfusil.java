@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /** Subfusil: dispara de a 2 y el retroceso le quita daño según el control. */
 public class Subfusil extends ArmaDeFuego {

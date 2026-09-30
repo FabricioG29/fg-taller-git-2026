@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /** Pistola: puede alternar a modo ráfaga (3 balas por disparo). */
 public class Pistola extends ArmaDeFuego {

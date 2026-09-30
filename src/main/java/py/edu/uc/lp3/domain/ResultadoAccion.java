@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /**
  * Lo que un arma informa después de usarse. Es inmutable (record):

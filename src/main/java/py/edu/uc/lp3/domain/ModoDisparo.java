@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /** Modo de disparo de un rifle. Cada modo sabe cuántas balas consume por disparo. */
 public enum ModoDisparo {

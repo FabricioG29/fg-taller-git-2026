@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /** Francotirador: con zoom activo ignora la precisión y suma penetración. */
 public class Francotirador extends ArmaDeFuego {

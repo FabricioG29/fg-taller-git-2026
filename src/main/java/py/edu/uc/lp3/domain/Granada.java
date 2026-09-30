@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /**
  * Granada: no tiene munición, se lanza y tiene cooldown.

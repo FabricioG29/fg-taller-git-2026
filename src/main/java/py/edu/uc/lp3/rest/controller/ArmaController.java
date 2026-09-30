@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.web;
+package py.edu.uc.lp3.rest.controller;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.edu.uc.lp3.cs2.Equipo;
-import py.edu.uc.lp3.cs2.Pistola;
+import py.edu.uc.lp3.constants.ApiPaths;
+import py.edu.uc.lp3.domain.Equipo;
+import py.edu.uc.lp3.domain.Pistola;
+import py.edu.uc.lp3.service.ArmaService;
 
 /**
  * Construye una Pistola con los parámetros de la URL.
@@ -17,10 +19,16 @@ import py.edu.uc.lp3.cs2.Pistola;
  * el constructor de la clase y ManejoErrores responde 400.
  */
 @RestController
-@RequestMapping("/api/armas")
+@RequestMapping(ApiPaths.ARMAS)
 public class ArmaController {
 
-    @GetMapping("/pistola")
+    private final ArmaService armaService;
+
+    public ArmaController(ArmaService armaService) {
+        this.armaService = armaService;
+    }
+
+    @GetMapping(ApiPaths.PISTOLA)
     public Map<String, Object> crearPistola(
             @RequestParam String nombre,
             @RequestParam int precio,
@@ -30,7 +38,7 @@ public class ArmaController {
             @RequestParam(defaultValue = "20") int cargador,
             @RequestParam(defaultValue = "120") int reserva) {
 
-        Pistola pistola = new Pistola(nombre, precio, equipo, danio, precision, cargador, reserva);
+        Pistola pistola = armaService.crearPistola(nombre, precio, equipo, danio, precision, cargador, reserva);
 
         Map<String, Object> respuesta = new LinkedHashMap<>();
         respuesta.put("creada", pistola.mostrarEnTienda());

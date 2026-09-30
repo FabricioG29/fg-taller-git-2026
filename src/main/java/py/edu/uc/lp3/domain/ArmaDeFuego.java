@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /**
  * Arma que dispara balas. Controla la munición: nadie de afuera puede

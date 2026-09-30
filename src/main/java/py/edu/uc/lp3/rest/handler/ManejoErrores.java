@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.web;
+package py.edu.uc.lp3.rest.handler;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;

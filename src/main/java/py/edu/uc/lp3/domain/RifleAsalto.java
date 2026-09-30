@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /** Rifle de asalto: el modo de disparo decide las balas por disparo. */
 public class RifleAsalto extends ArmaDeFuego {

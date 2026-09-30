@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.cs2;
+package py.edu.uc.lp3.domain;
 
 /** Escopeta: el daño base es por perdigón; un disparo suelta todos. */
 public class Escopeta extends ArmaDeFuego {
