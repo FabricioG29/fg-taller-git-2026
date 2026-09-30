@@ -17,10 +17,10 @@ public class Granada extends Arma {
     public Granada(String nombre, int precio, Equipo equipo, int danio,
                    float radioExplosion, float tiempoActivacion, String efecto, long cooldownMs) {
         super(nombre, precio, equipo, danio);
-        if (radioExplosion <= 0f) {
+        if (!Float.isFinite(radioExplosion) || radioExplosion <= 0f) {
             throw new IllegalArgumentException("El radio de explosión debe ser > 0");
         }
-        if (tiempoActivacion < 0f) {
+        if (!Float.isFinite(tiempoActivacion) || tiempoActivacion < 0f) {
             throw new IllegalArgumentException("El tiempo de activación no puede ser negativo");
         }
         if (efecto == null || efecto.isBlank()) {

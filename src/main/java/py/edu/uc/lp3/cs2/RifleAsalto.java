@@ -10,7 +10,7 @@ public class RifleAsalto extends ArmaDeFuego {
                        float precision, int capacidadCargador, int municionReserva,
                        float cadenciaDisparo) {
         super(nombre, precio, equipo, danio, precision, capacidadCargador, municionReserva, 2.5f);
-        if (cadenciaDisparo <= 0f) {
+        if (!Float.isFinite(cadenciaDisparo) || cadenciaDisparo <= 0f) {
             throw new IllegalArgumentException("La cadencia debe ser > 0");
         }
         this.cadenciaDisparo = cadenciaDisparo;

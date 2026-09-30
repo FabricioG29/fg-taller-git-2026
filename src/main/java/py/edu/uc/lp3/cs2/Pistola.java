@@ -3,7 +3,16 @@ package py.edu.uc.lp3.cs2;
 /** Pistola: puede alternar a modo ráfaga (3 balas por disparo). */
 public class Pistola extends ArmaDeFuego {
 
+    private static final float PRECISION_ESTANDAR = 0.9f;
+    private static final int CARGADOR_ESTANDAR = 20;
+    private static final int RESERVA_ESTANDAR = 120;
+
     private boolean modoRafaga;
+
+    /** Sobrecarga: pistola de fábrica (precisión 0.9, cargador 20, reserva 120). */
+    public Pistola(String nombre, int precio, Equipo equipo, int danio) {
+        this(nombre, precio, equipo, danio, PRECISION_ESTANDAR, CARGADOR_ESTANDAR, RESERVA_ESTANDAR);
+    }
 
     public Pistola(String nombre, int precio, Equipo equipo, int danio,
                    float precision, int capacidadCargador, int municionReserva) {

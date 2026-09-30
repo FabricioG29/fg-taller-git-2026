@@ -13,7 +13,7 @@ public class Escopeta extends ArmaDeFuego {
         if (numeroPerdigones <= 0) {
             throw new IllegalArgumentException("Debe tener al menos un perdigón");
         }
-        if (distanciaEfectiva <= 0f) {
+        if (!Float.isFinite(distanciaEfectiva) || distanciaEfectiva <= 0f) {
             throw new IllegalArgumentException("La distancia efectiva debe ser > 0");
         }
         this.numeroPerdigones = numeroPerdigones;

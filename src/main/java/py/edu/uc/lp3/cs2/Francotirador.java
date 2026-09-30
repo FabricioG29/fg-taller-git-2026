@@ -11,10 +11,10 @@ public class Francotirador extends ArmaDeFuego {
                          float precision, int capacidadCargador, int municionReserva,
                          float zoom, float penetracion) {
         super(nombre, precio, equipo, danio, precision, capacidadCargador, municionReserva, 3.7f);
-        if (zoom < 1f) {
+        if (!Float.isFinite(zoom) || zoom < 1f) {
             throw new IllegalArgumentException("El zoom debe ser >= 1");
         }
-        if (penetracion < 0f || penetracion > 1f) {
+        if (!Float.isFinite(penetracion) || penetracion < 0f || penetracion > 1f) {
             throw new IllegalArgumentException("Penetración inválida (0..1)");
         }
         this.zoom = zoom;

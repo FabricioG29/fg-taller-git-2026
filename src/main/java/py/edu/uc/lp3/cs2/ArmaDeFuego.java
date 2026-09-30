@@ -21,7 +21,7 @@ public abstract class ArmaDeFuego extends Arma {
         if (danio <= 0) {
             throw new IllegalArgumentException("Un arma de fuego debe hacer daño (> 0)");
         }
-        if (precision <= 0f || precision > 1f) {
+        if (!Float.isFinite(precision) || precision <= 0f || precision > 1f) {
             throw new IllegalArgumentException("Precisión inválida: " + precision + " (0..1]");
         }
         if (capacidadCargador <= 0) {
@@ -30,7 +30,7 @@ public abstract class ArmaDeFuego extends Arma {
         if (municionReserva < 0) {
             throw new IllegalArgumentException("La munición de reserva no puede ser negativa");
         }
-        if (tiempoRecarga <= 0f) {
+        if (!Float.isFinite(tiempoRecarga) || tiempoRecarga <= 0f) {
             throw new IllegalArgumentException("El tiempo de recarga debe ser > 0");
         }
         this.precision = precision;
