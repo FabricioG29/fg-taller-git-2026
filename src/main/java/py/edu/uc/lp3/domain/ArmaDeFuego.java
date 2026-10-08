@@ -1,5 +1,8 @@
 package py.edu.uc.lp3.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Arma que dispara balas. Controla la munición: nadie de afuera puede
  * cambiar el cargador ni la reserva, solo disparar() y recargar().
@@ -56,6 +59,19 @@ public abstract class ArmaDeFuego extends Arma {
         int danioTotal = calcularDanio() * balas;
         return new ResultadoAccion(getNombre(), getClass().getSimpleName(), "dispara", danioTotal,
                 balas + " bala(s), quedan " + municionCargador + "/" + municionReserva);
+    }
+
+    /** Sobrecarga del mensaje: varios disparos seguidos. Reutiliza disparar(), no duplica reglas. */
+    public final List<ResultadoAccion> disparar(int veces) {
+        if (veces <= 0 || veces > capacidadCargador) {
+            throw new IllegalArgumentException("Cantidad de disparos inválida: " + veces
+                    + " (1.." + capacidadCargador + ")");
+        }
+        List<ResultadoAccion> resultados = new ArrayList<>();
+        for (int i = 0; i < veces; i++) {
+            resultados.add(disparar());
+        }
+        return resultados;
     }
 
     @Override
