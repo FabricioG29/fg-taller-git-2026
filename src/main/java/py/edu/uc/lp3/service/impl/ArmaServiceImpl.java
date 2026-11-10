@@ -10,7 +10,7 @@ import py.edu.uc.lp3.service.ArmaService;
 
 /**
  * Arma los objetos del dominio. No valida nada: las reglas viven en las clases
- * (si un valor es ilegal, el constructor lanza IllegalArgumentException).
+ * (si un valor es ilegal, el constructor lanza ValorInvalidoException).
  */
 @Service
 public class ArmaServiceImpl implements ArmaService {

@@ -1,5 +1,7 @@
 package py.edu.uc.lp3.domain;
 
+import py.edu.uc.lp3exceptions.ValorInvalidoException;
+
 /** Subfusil: dispara de a 2 y el retroceso le quita daño según el control. */
 public class Subfusil extends ArmaDeFuego {
 
@@ -10,7 +12,7 @@ public class Subfusil extends ArmaDeFuego {
                     float controlRetroceso) {
         super(nombre, precio, equipo, danio, precision, capacidadCargador, municionReserva, 2.1f);
         if (!Float.isFinite(controlRetroceso) || controlRetroceso < 0f || controlRetroceso > 1f) {
-            throw new IllegalArgumentException("Control de retroceso inválido (0..1)");
+            throw new ValorInvalidoException("Control de retroceso inválido (0..1)");
         }
         this.controlRetroceso = controlRetroceso;
     }

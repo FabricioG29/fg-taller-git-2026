@@ -1,5 +1,7 @@
 package py.edu.uc.lp3.domain;
 
+import py.edu.uc.lp3exceptions.ValorInvalidoException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,19 +24,19 @@ public abstract class ArmaDeFuego extends Arma {
                           float tiempoRecarga) {
         super(nombre, precio, equipo, danio);
         if (danio <= 0) {
-            throw new IllegalArgumentException("Un arma de fuego debe hacer daño (> 0)");
+            throw new ValorInvalidoException("Un arma de fuego debe hacer daño (> 0)");
         }
         if (!Float.isFinite(precision) || precision <= 0f || precision > 1f) {
-            throw new IllegalArgumentException("Precisión inválida: " + precision + " (0..1]");
+            throw new ValorInvalidoException("Precisión inválida: " + precision + " (0..1]");
         }
         if (capacidadCargador <= 0) {
-            throw new IllegalArgumentException("La capacidad del cargador debe ser > 0");
+            throw new ValorInvalidoException("La capacidad del cargador debe ser > 0");
         }
         if (municionReserva < 0) {
-            throw new IllegalArgumentException("La munición de reserva no puede ser negativa");
+            throw new ValorInvalidoException("La munición de reserva no puede ser negativa");
         }
         if (!Float.isFinite(tiempoRecarga) || tiempoRecarga <= 0f) {
-            throw new IllegalArgumentException("El tiempo de recarga debe ser > 0");
+            throw new ValorInvalidoException("El tiempo de recarga debe ser > 0");
         }
         this.precision = precision;
         this.capacidadCargador = capacidadCargador;
@@ -64,7 +66,7 @@ public abstract class ArmaDeFuego extends Arma {
     /** Sobrecarga del mensaje: varios disparos seguidos. Reutiliza disparar(), no duplica reglas. */
     public final List<ResultadoAccion> disparar(int veces) {
         if (veces <= 0 || veces > capacidadCargador) {
-            throw new IllegalArgumentException("Cantidad de disparos inválida: " + veces
+            throw new ValorInvalidoException("Cantidad de disparos inválida: " + veces
                     + " (1.." + capacidadCargador + ")");
         }
         List<ResultadoAccion> resultados = new ArrayList<>();

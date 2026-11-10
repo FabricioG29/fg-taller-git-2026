@@ -1,5 +1,7 @@
 package py.edu.uc.lp3.domain;
 
+import py.edu.uc.lp3exceptions.ValorInvalidoException;
+
 /** Francotirador: con zoom activo ignora la precisión y suma penetración. */
 public class Francotirador extends ArmaDeFuego {
 
@@ -12,10 +14,10 @@ public class Francotirador extends ArmaDeFuego {
                          float zoom, float penetracion) {
         super(nombre, precio, equipo, danio, precision, capacidadCargador, municionReserva, 3.7f);
         if (!Float.isFinite(zoom) || zoom < 1f) {
-            throw new IllegalArgumentException("El zoom debe ser >= 1");
+            throw new ValorInvalidoException("El zoom debe ser >= 1");
         }
         if (!Float.isFinite(penetracion) || penetracion < 0f || penetracion > 1f) {
-            throw new IllegalArgumentException("Penetración inválida (0..1)");
+            throw new ValorInvalidoException("Penetración inválida (0..1)");
         }
         this.zoom = zoom;
         this.penetracion = penetracion;

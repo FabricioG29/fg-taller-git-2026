@@ -1,5 +1,7 @@
 package py.edu.uc.lp3.domain;
 
+import py.edu.uc.lp3exceptions.ValorInvalidoException;
+
 /** Escopeta: el daño base es por perdigón; un disparo suelta todos. */
 public class Escopeta extends ArmaDeFuego {
 
@@ -11,10 +13,10 @@ public class Escopeta extends ArmaDeFuego {
                     int numeroPerdigones, float distanciaEfectiva) {
         super(nombre, precio, equipo, danioPorPerdigon, precision, capacidadCargador, municionReserva, 0.5f);
         if (numeroPerdigones <= 0) {
-            throw new IllegalArgumentException("Debe tener al menos un perdigón");
+            throw new ValorInvalidoException("Debe tener al menos un perdigón");
         }
         if (!Float.isFinite(distanciaEfectiva) || distanciaEfectiva <= 0f) {
-            throw new IllegalArgumentException("La distancia efectiva debe ser > 0");
+            throw new ValorInvalidoException("La distancia efectiva debe ser > 0");
         }
         this.numeroPerdigones = numeroPerdigones;
         this.distanciaEfectiva = distanciaEfectiva;

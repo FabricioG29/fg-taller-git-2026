@@ -1,5 +1,7 @@
 package py.edu.uc.lp3.domain;
 
+import py.edu.uc.lp3exceptions.ValorInvalidoException;
+
 /**
  * Clase base de todo el dominio CS2.
  * Concentra lo común (nombre, precio, equipo, daño base) y declara el contrato
@@ -15,16 +17,16 @@ public abstract class Arma {
 
     protected Arma(String nombre, int precio, Equipo equipo, int danio) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre del arma no puede estar vacío");
+            throw new ValorInvalidoException("El nombre del arma no puede estar vacío");
         }
         if (precio < 0 || precio > 10_000) {
-            throw new IllegalArgumentException("Precio inválido: " + precio + " (0..10000)");
+            throw new ValorInvalidoException("Precio inválido: " + precio + " (0..10000)");
         }
         if (equipo == null) {
-            throw new IllegalArgumentException("El equipo es obligatorio");
+            throw new ValorInvalidoException("El equipo es obligatorio");
         }
         if (danio < 0 || danio > 500) {
-            throw new IllegalArgumentException("Daño inválido: " + danio + " (0..500)");
+            throw new ValorInvalidoException("Daño inválido: " + danio + " (0..500)");
         }
         this.nombre = nombre.trim();
         this.precio = precio;

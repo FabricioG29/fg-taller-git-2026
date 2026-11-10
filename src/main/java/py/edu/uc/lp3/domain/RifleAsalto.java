@@ -1,5 +1,7 @@
 package py.edu.uc.lp3.domain;
 
+import py.edu.uc.lp3exceptions.ValorInvalidoException;
+
 /** Rifle de asalto: el modo de disparo decide las balas por disparo. */
 public class RifleAsalto extends ArmaDeFuego {
 
@@ -11,14 +13,14 @@ public class RifleAsalto extends ArmaDeFuego {
                        float cadenciaDisparo) {
         super(nombre, precio, equipo, danio, precision, capacidadCargador, municionReserva, 2.5f);
         if (!Float.isFinite(cadenciaDisparo) || cadenciaDisparo <= 0f) {
-            throw new IllegalArgumentException("La cadencia debe ser > 0");
+            throw new ValorInvalidoException("La cadencia debe ser > 0");
         }
         this.cadenciaDisparo = cadenciaDisparo;
     }
 
     public void cambiarModo(ModoDisparo m) {
         if (m == null) {
-            throw new IllegalArgumentException("El modo de disparo no puede ser nulo");
+            throw new ValorInvalidoException("El modo de disparo no puede ser nulo");
         }
         this.modoDisparo = m;
     }
