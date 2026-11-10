@@ -1,0 +1,737 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-10T12:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v10.3.0",
+  "resources": [
+    {
+      "_id": "wrk_fg_poo08",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "fg-taller-git-2026 · POO-08 (CS2)",
+      "description": "CRUD de armas, simulación de disparos y errores por tipo. Correr en orden con la base vacía (borrar la carpeta data/).",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_fg_base",
+      "_type": "environment",
+      "parentId": "wrk_fg_poo08",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "glockId": 1,
+        "granadaId": 2,
+        "akId": 3,
+        "p250Id": 4,
+        "atacanteId": 1,
+        "rivalId": 2,
+        "botId": 3,
+        "idInexistente": 999
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "glockId",
+          "granadaId",
+          "akId",
+          "p250Id",
+          "atacanteId",
+          "rivalId",
+          "botId",
+          "idInexistente"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1
+    },
+    {
+      "_id": "fld_01",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo08",
+      "name": "1. Arranque",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 100
+    },
+    {
+      "_id": "req_01",
+      "_type": "request",
+      "parentId": "fld_01",
+      "name": "01 GET / (servicio vivo)",
+      "description": "Esperado: 200 con estado UP.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "fld_02",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo08",
+      "name": "2. CRUD de armas",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 200
+    },
+    {
+      "_id": "req_02",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "02 POST crear pistola Glock-18",
+      "description": "Constructor simple (sin precision/cargador/reserva). Esperado: 201, id 1, tipo pistola, munición 20/120.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"pistola\",\n  \"nombre\": \"Glock-18\",\n  \"precio\": 200,\n  \"equipo\": \"TERRORISTAS\",\n  \"danio\": 30\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_03",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "03 POST crear granada HE",
+      "description": "Esperado: 201, id 2, tipo granada.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 30,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"granada\",\n  \"nombre\": \"HE Grenade\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 98,\n  \"radioExplosion\": 5.0,\n  \"tiempoActivacion\": 1.5,\n  \"efecto\": \"Explosión de fragmentación\",\n  \"cooldownMs\": 3000\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_04",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "04 POST crear rifle AK-47",
+      "description": "Esperado: 201, id 3, tipo rifle.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 40,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"rifle\",\n  \"nombre\": \"AK-47\",\n  \"precio\": 2700,\n  \"equipo\": \"TERRORISTAS\",\n  \"danio\": 36,\n  \"precision\": 0.8,\n  \"cargador\": 30,\n  \"reserva\": 90,\n  \"cadencia\": 10\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_05",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "05 GET listar armas",
+      "description": "Esperado: 200 con las 3 armas, cada una con su \"tipo\".",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 50,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_06",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "06 GET arma por id",
+      "description": "Esperado: 200, la Glock-18.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas/{{ _.glockId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 60,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_07",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "07 PATCH arma (nombre y precio)",
+      "description": "Cambia solo esos campos. Repetir el GET por id: el cambio sigue.",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/armas/{{ _.glockId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 70,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Glock-18 Custom\",\n  \"precio\": 250\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_08",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "08 GET armas del bando TERRORISTAS",
+      "description": "Consulta del repositorio findByEquipoOrderByIdAsc.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas?equipo=TERRORISTAS",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 80,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_09",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "09 DELETE arma AK-47",
+      "description": "Esperado: 204 sin cuerpo.",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/armas/{{ _.akId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 90,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_10",
+      "_type": "request",
+      "parentId": "fld_02",
+      "name": "10 GET arma borrada (id inexistente)",
+      "description": "Esperado: 404 RECURSO_NO_ENCONTRADO.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas/{{ _.akId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "fld_03",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo08",
+      "name": "3. Jugadores",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 300
+    },
+    {
+      "_id": "req_11",
+      "_type": "request",
+      "parentId": "fld_03",
+      "name": "11 POST jugador Fabri (TERRORISTAS)",
+      "description": "Constructor simple: vida 100, armadura 100. Esperado: 201, id 1.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 110,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Fabri\",\n  \"equipo\": \"TERRORISTAS\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_12",
+      "_type": "request",
+      "parentId": "fld_03",
+      "name": "12 POST jugador Rival (ANTITERRORISTAS)",
+      "description": "Esperado: 201, id 2.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 120,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Rival\",\n  \"equipo\": \"ANTITERRORISTAS\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_13",
+      "_type": "request",
+      "parentId": "fld_03",
+      "name": "13 GET listar jugadores",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 130,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "fld_04",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo08",
+      "name": "4. Protocolo Inspeccionable",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 400
+    },
+    {
+      "_id": "req_14",
+      "_type": "request",
+      "parentId": "fld_04",
+      "name": "14 GET inspección (armas, jugadores y disparos)",
+      "description": "El mismo mensaje inspeccionar() a objetos de familias distintas.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/inspeccion",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 140,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "fld_05",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo08",
+      "name": "5. Simulación (caso feliz)",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 500
+    },
+    {
+      "_id": "req_15",
+      "_type": "request",
+      "parentId": "fld_05",
+      "name": "15 POST simular 3 disparos Fabri → Rival con la Glock",
+      "description": "Regla 1: la Glock gasta 3 balas (20 → 17). Regla 2: cada disparo hace 27; el chaleco absorbe 13 y la vida baja 14. Esperado: 201, Rival vida 58 y armadura 61.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/simulaciones/disparos",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 150,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": {{ _.atacanteId }},\n  \"objetivoId\": {{ _.rivalId }},\n  \"armaId\": {{ _.glockId }},\n  \"veces\": 3\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_16",
+      "_type": "request",
+      "parentId": "fld_05",
+      "name": "16 GET Rival después de simular",
+      "description": "Esperado: vida 58, armadura 61 (persistido).",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/jugadores/{{ _.rivalId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 160,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_17",
+      "_type": "request",
+      "parentId": "fld_05",
+      "name": "17 GET Glock después de simular",
+      "description": "Esperado: munición 17/120.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas/{{ _.glockId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 170,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_18",
+      "_type": "request",
+      "parentId": "fld_05",
+      "name": "18 GET disparos recibidos por Rival",
+      "description": "Esperado: 3 registros persistidos.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/disparos?objetivoId={{ _.rivalId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 180,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_19",
+      "_type": "request",
+      "parentId": "fld_05",
+      "name": "19 POST recargar la Glock",
+      "description": "Regla de munición: pasa 3 balas de la reserva. Esperado: 20/117.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas/{{ _.glockId }}/recarga",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 190,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "fld_06",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo08",
+      "name": "6. Errores (uno por tipo de excepción)",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 600
+    },
+    {
+      "_id": "req_20",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "20 POST arma ilegal (daño negativo) → ValorInvalidoException",
+      "description": "Esperado: 400 VALOR_INVALIDO. Después, GET listar armas: no creció.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"pistola\",\n  \"nombre\": \"Rota\",\n  \"precio\": 200,\n  \"equipo\": \"TERRORISTAS\",\n  \"danio\": -5\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_21",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "21 GET listar armas (no creció)",
+      "description": "Siguen solo la Glock y la granada.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 210,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_22",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "22 GET arma inexistente → RecursoNoEncontradoException",
+      "description": "Esperado: 404 RECURSO_NO_ENCONTRADO.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas/{{ _.idInexistente }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 220,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_23",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "23 POST preparar P250 con 1 sola bala",
+      "description": "Constructor sobrecargado. Esperado: 201, id 4, munición 1/0.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 230,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"pistola\",\n  \"nombre\": \"P250\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 30,\n  \"precision\": 0.9,\n  \"cargador\": 1,\n  \"reserva\": 0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_24",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "24 POST simular 2 disparos con 1 bala → SinMunicionException",
+      "description": "Esperado: 409 SIN_MUNICION. Toda la simulación se deshace.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/simulaciones/disparos",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 240,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": {{ _.atacanteId }},\n  \"objetivoId\": {{ _.rivalId }},\n  \"armaId\": {{ _.p250Id }},\n  \"veces\": 2\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_25",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "25 GET P250 (rollback: sigue 1/0)",
+      "description": "Esperado: munición 1/0 y Rival sigue con vida 58: el primer disparo también se deshizo.",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/armas/{{ _.p250Id }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 250,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_26",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "26 POST preparar jugador Bot (vida 1, sin chaleco)",
+      "description": "Constructor sobrecargado. Esperado: 201, id 3.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 260,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Bot\",\n  \"equipo\": \"ANTITERRORISTAS\",\n  \"vida\": 1,\n  \"armadura\": 0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_27",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "27 POST simular disparo que elimina al Bot",
+      "description": "Esperado: 201, Bot vida 0, eliminado true.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/simulaciones/disparos",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 270,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": {{ _.atacanteId }},\n  \"objetivoId\": {{ _.botId }},\n  \"armaId\": {{ _.glockId }},\n  \"veces\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_28",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "28 POST disparar a un eliminado → JugadorEliminadoException",
+      "description": "Esperado: 422 JUGADOR_ELIMINADO.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/simulaciones/disparos",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 280,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": {{ _.atacanteId }},\n  \"objetivoId\": {{ _.botId }},\n  \"armaId\": {{ _.glockId }},\n  \"veces\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_29",
+      "_type": "request",
+      "parentId": "fld_06",
+      "name": "29 POST tipo de arma desconocido → JSON inválido",
+      "description": "Esperado: 400 JSON_INVALIDO (Jackson no conoce el subtipo).",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 290,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"cuchillo\",\n  \"nombre\": \"Karambit\",\n  \"precio\": 0,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 40\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
+}
