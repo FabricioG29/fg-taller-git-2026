@@ -4,10 +4,10 @@
 |---|---|
 | Asistente | Claude (app de escritorio de Claude, modo Cowork), de Anthropic |
 | Modelo | `claude-opus-5-5` (en el selector de la app figura como "Opus 5.5") |
-| Período | 23 de septiembre al 8 de octubre de 2026 |
+| Período | 23 de septiembre al 10 de noviembre de 2026 (POO-06 y POO-08) |
 | Alumno | Fabricio González (`FabricioG29`) |
 
-## Resumen de los prompts
+## Resumen de los prompts — POO-06 (taller de Git y revisión)
 
 1. **Dónde trabajar.** Le pasé la guía del taller (TALLER_GIT.md) y el enunciado, y le pregunté si tenía que hacer todo en la VM, donde tengo OpenCode, o en el Mac.
 2. **Diagrama.** Le pasé el link de mermaid.live con mi diagrama de CS2 de POO-03 y le pedí que me dijera qué le faltaba para cumplir la opción B.
@@ -21,9 +21,21 @@
 10. **Template.** Le pedí reorganizar las clases según `alefq/lp3-template-tp` (`domain`, `rest/controller`, `service`, `constants`).
 11. **Entrega final.** Con los requisitos nuevos de corrección le pedí la sobrecarga de un mensaje (`disparar(int veces)`), el apartado de sobrecarga y sobreescritura del README y esta bitácora.
 
+## Resumen de los prompts — POO-08 (CRUD, H2 e Insomnia)
+
+1. **Enunciado.** Le pasé la consigna de POO-08 (persistencia en H2, CRUD, dos reglas, excepciones, interface, Insomnia) y le pedí que la aplicara a mi modelo de CS2 sin romper lo de POO-06 (método abstracto `usar()`, sobrecarga y sobreescritura).
+2. **Diseño de la persistencia.** Le pregunté qué tres clases persistir y qué estrategia de herencia de JPA usar. Quedó la familia `Arma` en una sola tabla (`SINGLE_TABLE`), `Jugador` y `Disparo`.
+3. **Ocultamiento con JPA.** Le pregunté cómo convive el constructor vacío que pide JPA con no tener setters; se usó un constructor `protected` y los cambios por mensajes (`renombrar`, `cambiarPrecio`).
+4. **Reglas del juego.** Le pedí dos reglas de CS2 que cambien más de un objeto a la vez: munición (el cargador vacío no dispara) y daño con chaleco (absorbe la mitad, vida 0 elimina).
+5. **Excepciones.** Le pedí una jerarquía propia con un handler por tipo y que justificara excepción comprobada vs. no comprobada.
+6. **JSON polimórfico.** Le pregunté cómo hacer que el JSON diga qué tipo de arma se crea y se lista; se usó `@JsonTypeInfo` con el campo `"tipo"`.
+7. **Insomnia y README.** Le pedí la colección con el orden de prueba y un pedido por cada error, el diagrama Mermaid actualizado y las respuestas a "Qué hay que pensar".
+8. **Commits.** Le pedí separar el trabajo en commits por parte (propiedades, excepciones, entidades, repositorios, CRUD, simulación, Insomnia, README).
+
 ## Qué hice yo
 
 - Ejecuté cada paso en la VM (Ubuntu) desde la terminal del Mac por SSH: clonado, generación del proyecto, compilación, commits y push.
 - Probé todos los endpoints en el navegador, incluidos los casos de error (`danio=-5`, `precision=NaN`), y mandé capturas para corregir lo que fallaba.
 - Revisé que el diagrama Mermaid se dibujara en GitHub y que coincidiera con el código.
 - Decidí el dominio (CS2) y el diagrama de partida, y elegí qué ajustes del diagrama aceptar.
+- En POO-08 apliqué los commits en la VM, arranqué el servicio, recorrí la colección de Insomnia contra mi servicio y revisé las tablas en la consola de H2.
