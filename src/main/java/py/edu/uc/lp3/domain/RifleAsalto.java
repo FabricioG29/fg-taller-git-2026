@@ -1,12 +1,26 @@
 package py.edu.uc.lp3.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /** Rifle de asalto: el modo de disparo decide las balas por disparo. */
+@Entity
+@DiscriminatorValue("RIFLE")
 public class RifleAsalto extends ArmaDeFuego {
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 15)
     private ModoDisparo modoDisparo = ModoDisparo.AUTOMATICO;
-    private final float cadenciaDisparo; // disparos por segundo
+    private float cadenciaDisparo; // disparos por segundo
+
+    /** Solo para JPA. */
+    protected RifleAsalto() {
+    }
 
     public RifleAsalto(String nombre, int precio, Equipo equipo, int danio,
                        float precision, int capacidadCargador, int municionReserva,

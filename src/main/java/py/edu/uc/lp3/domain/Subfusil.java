@@ -1,11 +1,20 @@
 package py.edu.uc.lp3.domain;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /** Subfusil: dispara de a 2 y el retroceso le quita daño según el control. */
+@Entity
+@DiscriminatorValue("SUBFUSIL")
 public class Subfusil extends ArmaDeFuego {
 
-    private final float controlRetroceso; // 0..1 (1 = sin retroceso)
+    private float controlRetroceso; // 0..1 (1 = sin retroceso)
+
+    /** Solo para JPA. */
+    protected Subfusil() {
+    }
 
     public Subfusil(String nombre, int precio, Equipo equipo, int danio,
                     float precision, int capacidadCargador, int municionReserva,
@@ -15,6 +24,10 @@ public class Subfusil extends ArmaDeFuego {
             throw new ValorInvalidoException("Control de retroceso inválido (0..1)");
         }
         this.controlRetroceso = controlRetroceso;
+    }
+
+    public float getControlRetroceso() {
+        return controlRetroceso;
     }
 
     @Override

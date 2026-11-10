@@ -1,13 +1,22 @@
 package py.edu.uc.lp3.domain;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /** Francotirador: con zoom activo ignora la precisión y suma penetración. */
+@Entity
+@DiscriminatorValue("FRANCOTIRADOR")
 public class Francotirador extends ArmaDeFuego {
 
-    private final float zoom;        // aumento, ej. 4x
-    private final float penetracion; // 0..1, daño extra
+    private float zoom;        // aumento, ej. 4x
+    private float penetracion; // 0..1, daño extra
     private boolean zoomActivo;
+
+    /** Solo para JPA. */
+    protected Francotirador() {
+    }
 
     public Francotirador(String nombre, int precio, Equipo equipo, int danio,
                          float precision, int capacidadCargador, int municionReserva,
@@ -33,6 +42,10 @@ public class Francotirador extends ArmaDeFuego {
 
     public boolean isZoomActivo() {
         return zoomActivo;
+    }
+
+    public float getPenetracion() {
+        return penetracion;
     }
 
     public float getZoom() {

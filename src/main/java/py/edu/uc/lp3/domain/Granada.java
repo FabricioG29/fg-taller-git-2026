@@ -1,5 +1,10 @@
 package py.edu.uc.lp3.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /**
@@ -8,13 +13,19 @@ import py.edu.uc.lp3exceptions.ValorInvalidoException;
  * esLetal NO es un atributo: se deduce del daño (evita estados contradictorios
  * como "letal con daño 0").
  */
+@Entity
+@DiscriminatorValue("GRANADA")
 public class Granada extends Arma {
 
-    private final float radioExplosion;   // metros
-    private final float tiempoActivacion; // segundos hasta detonar
-    private final String efecto;
-    private final long cooldownMs;
+    private float radioExplosion;   // metros
+    private float tiempoActivacion; // segundos hasta detonar
+    private String efecto;
+    private long cooldownMs;
     private long ultimoLanzamientoMs = Long.MIN_VALUE;
+
+    /** Solo para JPA. */
+    protected Granada() {
+    }
 
     public Granada(String nombre, int precio, Equipo equipo, int danio,
                    float radioExplosion, float tiempoActivacion, String efecto, long cooldownMs) {
@@ -75,6 +86,29 @@ public class Granada extends Arma {
                         + (esLetal() ? "" : " (no letal)"));
     }
 
+    @Override
+    public String inspeccionar() {
+        long espera = esperaRestanteMs();
+        return super.inspeccionar() + (espera > 0 ? " - en cooldown " + espera + " ms" : " - lista");
+    }
+
+    public float getRadioExplosion() {
+        return radioExplosion;
+    }
+
+    public float getTiempoActivacion() {
+        return tiempoActivacion;
+    }
+
+    public String getEfecto() {
+        return efecto;
+    }
+
+    public long getCooldownMs() {
+        return cooldownMs;
+    }
+
+    @JsonProperty("letal")
     public boolean esLetal() {
         return getDanioBase() > 0;
     }

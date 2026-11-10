@@ -1,6 +1,11 @@
 package py.edu.uc.lp3.domain;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 /** Pistola: puede alternar a modo ráfaga (3 balas por disparo). */
+@Entity
+@DiscriminatorValue("PISTOLA")
 public class Pistola extends ArmaDeFuego {
 
     private static final float PRECISION_ESTANDAR = 0.9f;
@@ -8,6 +13,10 @@ public class Pistola extends ArmaDeFuego {
     private static final int RESERVA_ESTANDAR = 120;
 
     private boolean modoRafaga;
+
+    /** Solo para JPA. */
+    protected Pistola() {
+    }
 
     /** Sobrecarga: pistola de fábrica (precisión 0.9, cargador 20, reserva 120). */
     public Pistola(String nombre, int precio, Equipo equipo, int danio) {

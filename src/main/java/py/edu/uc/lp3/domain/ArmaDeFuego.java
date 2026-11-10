@@ -1,5 +1,8 @@
 package py.edu.uc.lp3.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 import java.util.ArrayList;
@@ -11,13 +14,19 @@ import java.util.List;
  * Las hijas especializan el daño y las balas por disparo con dos "ganchos"
  * protected; el control de munición NO se puede pisar (métodos final).
  */
+@Entity
 public abstract class ArmaDeFuego extends Arma {
 
-    private final float precision;          // 0.0 .. 1.0
-    private final int capacidadCargador;    // necesario para saber hasta dónde recargar
+    @Column(name = "precision_disparo")
+    private float precision;          // 0.0 .. 1.0
+    private int capacidadCargador;    // necesario para saber hasta dónde recargar
     private int municionCargador;
     private int municionReserva;
-    private final float tiempoRecarga;      // segundos
+    private float tiempoRecarga;      // segundos
+
+    /** Solo para JPA. */
+    protected ArmaDeFuego() {
+    }
 
     protected ArmaDeFuego(String nombre, int precio, Equipo equipo, int danio,
                           float precision, int capacidadCargador, int municionReserva,
@@ -95,6 +104,19 @@ public abstract class ArmaDeFuego extends Arma {
     /** Gancho: cuántas balas salen por disparo. Por defecto una. */
     protected int balasPorDisparo() {
         return 1;
+    }
+
+    @Override
+    public String inspeccionar() {
+        return super.inspeccionar() + " - munición " + municionCargador + "/" + municionReserva;
+    }
+
+    public float getPrecision() {
+        return precision;
+    }
+
+    public int getCapacidadCargador() {
+        return capacidadCargador;
     }
 
     public int getMunicionCargador() {

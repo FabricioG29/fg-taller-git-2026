@@ -1,12 +1,21 @@
 package py.edu.uc.lp3.domain;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /** Escopeta: el daño base es por perdigón; un disparo suelta todos. */
+@Entity
+@DiscriminatorValue("ESCOPETA")
 public class Escopeta extends ArmaDeFuego {
 
-    private final int numeroPerdigones;
-    private final float distanciaEfectiva; // metros
+    private int numeroPerdigones;
+    private float distanciaEfectiva; // metros
+
+    /** Solo para JPA. */
+    protected Escopeta() {
+    }
 
     public Escopeta(String nombre, int precio, Equipo equipo, int danioPorPerdigon,
                     float precision, int capacidadCargador, int municionReserva,
@@ -20,6 +29,10 @@ public class Escopeta extends ArmaDeFuego {
         }
         this.numeroPerdigones = numeroPerdigones;
         this.distanciaEfectiva = distanciaEfectiva;
+    }
+
+    public int getNumeroPerdigones() {
+        return numeroPerdigones;
     }
 
     public float getDistanciaEfectiva() {
