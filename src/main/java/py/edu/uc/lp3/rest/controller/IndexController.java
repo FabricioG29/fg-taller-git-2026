@@ -29,6 +29,9 @@ public class IndexController {
                 "POST | GET " + ApiPaths.JUGADORES,
                 "GET " + ApiPaths.JUGADORES + "/{id}",
                 "GET " + ApiPaths.INSPECCION + "  (protocolo Inspeccionable)",
+                "POST " + ApiPaths.SIMULACION_DISPAROS + "  (simulación: munición + daño)",
+                "POST " + ApiPaths.ARMAS + "/{id}" + ApiPaths.RECARGA,
+                "GET " + ApiPaths.DISPAROS + "?objetivoId=",
                 "GET " + ApiPaths.ARMAS + ApiPaths.PISTOLA
                         + "?nombre=&precio=&equipo=&danio=&precision=&cargador=&reserva=",
                 "GET " + ApiPaths.ARMAS + ApiPaths.COMPORTAMIENTOS,

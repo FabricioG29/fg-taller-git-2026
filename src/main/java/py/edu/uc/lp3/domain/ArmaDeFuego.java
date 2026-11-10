@@ -3,6 +3,7 @@ package py.edu.uc.lp3.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
+import py.edu.uc.lp3exceptions.SinMunicionException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 import java.util.ArrayList;
@@ -60,10 +61,14 @@ public abstract class ArmaDeFuego extends Arma {
         return disparar();
     }
 
+    /**
+     * REGLA 1 (munición): cada disparo gasta balas del cargador; con el cargador
+     * vacío el arma no dispara y lanza SinMunicionException (hay que recargar).
+     */
     public final ResultadoAccion disparar() {
         if (municionCargador == 0) {
-            return new ResultadoAccion(getNombre(), getClass().getSimpleName(), "click", 0,
-                    "Cargador vacío, hay que recargar");
+            throw new SinMunicionException(getNombre() + ": cargador vacío (reserva "
+                    + municionReserva + "), hay que recargar");
         }
         int balas = Math.min(balasPorDisparo(), municionCargador);
         municionCargador -= balas;

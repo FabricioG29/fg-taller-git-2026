@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import py.edu.uc.lp3exceptions.JugadorEliminadoException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /**
@@ -68,6 +69,40 @@ public class Jugador implements Inspeccionable {
         this.equipo = equipo;
         this.vida = vida;
         this.armadura = armadura;
+    }
+
+    /**
+     * REGLA 2 (daño con chaleco): la armadura absorbe la mitad del daño (hasta lo
+     * que le queda) y se gasta en esa cantidad; el resto baja la vida, que nunca
+     * queda negativa. Con vida 0 el jugador queda eliminado.
+     */
+    public Impacto recibirDanio(int danio) {
+        if (danio < 0) {
+            throw new ValorInvalidoException("El daño no puede ser negativo: " + danio);
+        }
+        verificarQuePuedeRecibirDanio();
+        int absorbido = Math.min(armadura, danio / 2);
+        armadura -= absorbido;
+        int aLaVida = Math.min(vida, danio - absorbido);
+        vida -= aLaVida;
+        return new Impacto(danio, absorbido, aLaVida, vida, armadura, estaEliminado());
+    }
+
+    /** Antes de disparar: tiene que seguir vivo y el arma tiene que ser de su bando (o de AMBOS). */
+    public void verificarQuePuedeDisparar(Arma arma) {
+        if (estaEliminado()) {
+            throw new JugadorEliminadoException(nombre + " está eliminado y no puede disparar");
+        }
+        if (arma == null || !arma.esDelEquipo(equipo)) {
+            throw new ValorInvalidoException((arma == null ? "El arma" : arma.getNombre())
+                    + " no es de " + equipo + ": " + nombre + " no la puede usar");
+        }
+    }
+
+    public void verificarQuePuedeRecibirDanio() {
+        if (estaEliminado()) {
+            throw new JugadorEliminadoException(nombre + " ya está eliminado: no puede recibir más daño");
+        }
     }
 
     @JsonProperty("eliminado")
