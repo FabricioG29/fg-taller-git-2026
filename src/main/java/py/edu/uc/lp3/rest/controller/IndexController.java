@@ -21,8 +21,14 @@ public class IndexController {
         respuesta.put("autor", "Fabricio González");
         respuesta.put("asignatura", "Lenguaje de Programación 3 (CYT646)");
         respuesta.put("dominio", "Counter-Strike 2");
+        respuesta.put("persistencia", "H2 (consola en /h2-console)");
         respuesta.put("endpoints", List.of(
                 "GET " + ApiPaths.INDEX,
+                "POST | GET " + ApiPaths.ARMAS + "  (CRUD de la familia Arma)",
+                "GET | PATCH | DELETE " + ApiPaths.ARMAS + "/{id}",
+                "POST | GET " + ApiPaths.JUGADORES,
+                "GET " + ApiPaths.JUGADORES + "/{id}",
+                "GET " + ApiPaths.INSPECCION + "  (protocolo Inspeccionable)",
                 "GET " + ApiPaths.ARMAS + ApiPaths.PISTOLA
                         + "?nombre=&precio=&equipo=&danio=&precision=&cargador=&reserva=",
                 "GET " + ApiPaths.ARMAS + ApiPaths.COMPORTAMIENTOS,
