@@ -78,6 +78,18 @@ public class SimulacionServiceImpl implements SimulacionService {
         return armaRepository.save(arma);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Disparo> historial(Long objetivoId, Long atacanteId) {
+        if (objetivoId != null) {
+            return disparoRepository.findByObjetivoIdOrderByIdAsc(objetivoId);
+        }
+        if (atacanteId != null) {
+            return disparoRepository.findByAtacanteIdOrderByIdAsc(atacanteId);
+        }
+        return disparoRepository.findAll();
+    }
+
     private Jugador buscarJugador(Long id) {
         return jugadorRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Jugador", id));

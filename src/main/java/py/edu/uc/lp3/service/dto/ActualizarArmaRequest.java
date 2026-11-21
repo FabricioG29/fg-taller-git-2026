@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.rest.dto;
+package py.edu.uc.lp3.service.dto;
 
 /**
  * Cuerpo del PATCH /api/armas/{id}: solo los campos que se pueden cambiar

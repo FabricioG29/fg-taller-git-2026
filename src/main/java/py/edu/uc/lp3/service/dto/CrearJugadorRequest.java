@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.rest.dto;
+package py.edu.uc.lp3.service.dto;
 
 import py.edu.uc.lp3.domain.Equipo;
 import py.edu.uc.lp3.domain.Jugador;

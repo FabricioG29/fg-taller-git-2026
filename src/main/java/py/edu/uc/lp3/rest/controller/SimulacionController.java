@@ -15,8 +15,7 @@ import py.edu.uc.lp3.constants.ApiPaths;
 import py.edu.uc.lp3.domain.Arma;
 import py.edu.uc.lp3.domain.Disparo;
 import py.edu.uc.lp3.domain.ReporteSimulacion;
-import py.edu.uc.lp3.repository.DisparoRepository;
-import py.edu.uc.lp3.rest.dto.SimulacionRequest;
+import py.edu.uc.lp3.service.dto.SimulacionRequest;
 import py.edu.uc.lp3.service.SimulacionService;
 
 /**
@@ -27,11 +26,9 @@ import py.edu.uc.lp3.service.SimulacionService;
 public class SimulacionController {
 
     private final SimulacionService simulacionService;
-    private final DisparoRepository disparoRepository;
 
-    public SimulacionController(SimulacionService simulacionService, DisparoRepository disparoRepository) {
+    public SimulacionController(SimulacionService simulacionService) {
         this.simulacionService = simulacionService;
-        this.disparoRepository = disparoRepository;
     }
 
     /** POST /api/simulaciones/disparos → 201: crea los disparos y devuelve el estado ya persistido. */
@@ -53,12 +50,6 @@ public class SimulacionController {
     @GetMapping(ApiPaths.DISPAROS)
     public List<Disparo> historial(@RequestParam(value = "objetivoId", required = false) Long objetivoId,
                                    @RequestParam(value = "atacanteId", required = false) Long atacanteId) {
-        if (objetivoId != null) {
-            return disparoRepository.findByObjetivoIdOrderByIdAsc(objetivoId);
-        }
-        if (atacanteId != null) {
-            return disparoRepository.findByAtacanteIdOrderByIdAsc(atacanteId);
-        }
-        return disparoRepository.findAll();
+        return simulacionService.historial(objetivoId, atacanteId);
     }
 }

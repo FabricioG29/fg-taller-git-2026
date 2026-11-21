@@ -17,78 +17,49 @@ import org.springframework.web.bind.annotation.RestController;
 import py.edu.uc.lp3.constants.ApiPaths;
 import py.edu.uc.lp3.domain.Arma;
 import py.edu.uc.lp3.domain.Equipo;
-import py.edu.uc.lp3.repository.ArmaRepository;
-import py.edu.uc.lp3.rest.dto.ActualizarArmaRequest;
-import py.edu.uc.lp3.rest.dto.CrearArmaRequest;
-import py.edu.uc.lp3exceptions.RecursoNoEncontradoException;
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
+import py.edu.uc.lp3.service.ArmaService;
+import py.edu.uc.lp3.service.dto.ActualizarArmaRequest;
+import py.edu.uc.lp3.service.dto.CrearArmaRequest;
 
 /**
- * CRUD REST de la familia Arma. El recurso es "armas"; el verbo HTTP dice la operación.
- * El controller depende de la interface ArmaRepository (no de una clase concreta)
- * y de los mensajes del dominio: no valida ni asigna campos a mano.
+ * CRUD REST de la familia Arma. Solo traduce HTTP: todo pasa por ArmaService,
+ * que es quien valida y habla con el repositorio.
  */
 @RestController
 @RequestMapping(ApiPaths.ARMAS)
 public class ArmaCrudController {
 
-    private final ArmaRepository armaRepository;
+    private final ArmaService armaService;
 
-    public ArmaCrudController(ArmaRepository armaRepository) {
-        this.armaRepository = armaRepository;
+    public ArmaCrudController(ArmaService armaService) {
+        this.armaService = armaService;
     }
 
-    /** POST /api/armas → 201 con el arma creada y su id (lo asigna la base). */
     @PostMapping
     public ResponseEntity<Arma> crear(@RequestBody CrearArmaRequest pedido) {
-        Arma arma = armaRepository.save(pedido.crear()); // si el constructor rechaza, no se guarda nada
+        Arma arma = armaService.crear(pedido);
         return ResponseEntity.created(URI.create(ApiPaths.ARMAS + "/" + arma.getId())).body(arma);
     }
 
-    /** GET /api/armas[?equipo=TERRORISTAS | ?precioMaximo=2000] → lo que está en la tabla. */
     @GetMapping
     public List<Arma> listar(@RequestParam(value = "equipo", required = false) Equipo equipo,
                              @RequestParam(value = "precioMaximo", required = false) Integer precioMaximo) {
-        if (equipo != null) {
-            return armaRepository.findByEquipoOrderByIdAsc(equipo);
-        }
-        if (precioMaximo != null) {
-            return armaRepository.findByPrecioLessThanEqualOrderByPrecioAsc(precioMaximo);
-        }
-        return armaRepository.findAll();
+        return armaService.listar(equipo, precioMaximo);
     }
 
-    /** GET /api/armas/{id} → 200 o 404. */
     @GetMapping(ApiPaths.ID)
     public Arma buscar(@PathVariable("id") Long id) {
-        return buscarOFallar(id);
+        return armaService.buscar(id);
     }
 
-    /** PATCH /api/armas/{id} → cambia solo los campos enviados, por mensajes del dominio. */
     @PatchMapping(ApiPaths.ID)
     public Arma actualizar(@PathVariable("id") Long id, @RequestBody ActualizarArmaRequest pedido) {
-        if (pedido.nombre() == null && pedido.precio() == null) {
-            throw new ValorInvalidoException("Nada para actualizar: enviá \"nombre\" y/o \"precio\"");
-        }
-        Arma arma = buscarOFallar(id);
-        if (pedido.nombre() != null) {
-            arma.renombrar(pedido.nombre());
-        }
-        if (pedido.precio() != null) {
-            arma.cambiarPrecio(pedido.precio());
-        }
-        return armaRepository.save(arma);
+        return armaService.actualizar(id, pedido);
     }
 
-    /** DELETE /api/armas/{id} → 204; el arma sale del juego. 404 si no existe. */
     @DeleteMapping(ApiPaths.ID)
     public ResponseEntity<Void> borrar(@PathVariable("id") Long id) {
-        armaRepository.delete(buscarOFallar(id));
+        armaService.borrar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private Arma buscarOFallar(Long id) {
-        return armaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Arma", id));
     }
 }

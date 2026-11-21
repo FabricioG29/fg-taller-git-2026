@@ -14,36 +14,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import py.edu.uc.lp3.constants.ApiPaths;
 import py.edu.uc.lp3.domain.Jugador;
-import py.edu.uc.lp3.repository.JugadorRepository;
-import py.edu.uc.lp3.rest.dto.CrearJugadorRequest;
-import py.edu.uc.lp3exceptions.RecursoNoEncontradoException;
+import py.edu.uc.lp3.service.JugadorService;
+import py.edu.uc.lp3.service.dto.CrearJugadorRequest;
 
-/** Alta y consulta de jugadores (los participantes de la simulación). */
+/** Alta y consulta de jugadores, siempre a través de JugadorService. */
 @RestController
 @RequestMapping(ApiPaths.JUGADORES)
 public class JugadorController {
 
-    private final JugadorRepository jugadorRepository;
+    private final JugadorService jugadorService;
 
-    public JugadorController(JugadorRepository jugadorRepository) {
-        this.jugadorRepository = jugadorRepository;
+    public JugadorController(JugadorService jugadorService) {
+        this.jugadorService = jugadorService;
     }
 
     @PostMapping
     public ResponseEntity<Jugador> crear(@RequestBody CrearJugadorRequest pedido) {
-        Jugador jugador = jugadorRepository.save(pedido.crear());
+        Jugador jugador = jugadorService.crear(pedido);
         return ResponseEntity.created(URI.create(ApiPaths.JUGADORES + "/" + jugador.getId())).body(jugador);
     }
 
-    /** GET /api/jugadores[?vivos=true] */
     @GetMapping
     public List<Jugador> listar(@RequestParam(value = "vivos", defaultValue = "false") boolean soloVivos) {
-        return soloVivos ? jugadorRepository.findByVidaGreaterThanOrderByIdAsc(0) : jugadorRepository.findAll();
+        return jugadorService.listar(soloVivos);
     }
 
     @GetMapping(ApiPaths.ID)
     public Jugador buscar(@PathVariable("id") Long id) {
-        return jugadorRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Jugador", id));
+        return jugadorService.buscar(id);
     }
 }

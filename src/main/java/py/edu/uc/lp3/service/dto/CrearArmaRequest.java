@@ -1,4 +1,4 @@
-package py.edu.uc.lp3.rest.dto;
+package py.edu.uc.lp3.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
