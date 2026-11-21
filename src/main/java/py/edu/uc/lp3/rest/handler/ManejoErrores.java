@@ -1,9 +1,6 @@
 package py.edu.uc.lp3.rest.handler;
 
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,51 +27,46 @@ public class ManejoErrores {
 
     /** 400: el objeto quedaría en un estado imposible (invariante de construcción o de un mensaje). */
     @ExceptionHandler(ValorInvalidoException.class)
-    public ResponseEntity<Map<String, Object>> valorInvalido(ValorInvalidoException e) {
+    public ResponseEntity<ErrorRespuesta> valorInvalido(ValorInvalidoException e) {
         return responder(HttpStatus.BAD_REQUEST, e);
     }
 
     /** 404: el id de la URL no existe en la base. */
     @ExceptionHandler(RecursoNoEncontradoException.class)
-    public ResponseEntity<Map<String, Object>> noEncontrado(RecursoNoEncontradoException e) {
+    public ResponseEntity<ErrorRespuesta> noEncontrado(RecursoNoEncontradoException e) {
         return responder(HttpStatus.NOT_FOUND, e);
     }
 
     /** 409: el arma existe y el pedido es válido, pero su estado (cargador vacío) no lo permite. */
     @ExceptionHandler(SinMunicionException.class)
-    public ResponseEntity<Map<String, Object>> sinMunicion(SinMunicionException e) {
+    public ResponseEntity<ErrorRespuesta> sinMunicion(SinMunicionException e) {
         return responder(HttpStatus.CONFLICT, e);
     }
 
     /** 409: la granada ya se lanzó; es un consumible de un solo uso. */
     @ExceptionHandler(GranadaUsadaException.class)
-    public ResponseEntity<Map<String, Object>> granadaUsada(GranadaUsadaException e) {
+    public ResponseEntity<ErrorRespuesta> granadaUsada(GranadaUsadaException e) {
         return responder(HttpStatus.CONFLICT, e);
     }
 
     /** 422: el pedido es correcto, pero el jugador ya está eliminado y no puede participar. */
     @ExceptionHandler(JugadorEliminadoException.class)
-    public ResponseEntity<Map<String, Object>> jugadorEliminado(JugadorEliminadoException e) {
+    public ResponseEntity<ErrorRespuesta> jugadorEliminado(JugadorEliminadoException e) {
         return responder(HttpStatus.UNPROCESSABLE_ENTITY, e);
     }
 
     /** 400: JSON mal formado, "tipo" desconocido o un enum inexistente (no llega al dominio). */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, Object>> jsonIlegible(HttpMessageNotReadableException e) {
-        Map<String, Object> cuerpo = new LinkedHashMap<>();
-        cuerpo.put("status", HttpStatus.BAD_REQUEST.value());
-        cuerpo.put("error", "JSON_INVALIDO");
-        cuerpo.put("excepcion", "HttpMessageNotReadableException");
-        cuerpo.put("mensaje", "El cuerpo no se puede leer: revisá el JSON, el campo \"tipo\" y el \"equipo\"");
+    public ResponseEntity<ErrorRespuesta> jsonIlegible(HttpMessageNotReadableException e) {
+        ErrorRespuesta cuerpo = new ErrorRespuesta(HttpStatus.BAD_REQUEST.value(), "JSON_INVALIDO",
+                "HttpMessageNotReadableException",
+                "El cuerpo no se puede leer: revisá el JSON, el campo \"tipo\" y el \"equipo\"");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(JSON_UTF8).body(cuerpo);
     }
 
-    private ResponseEntity<Map<String, Object>> responder(HttpStatus status, JuegoException e) {
-        Map<String, Object> cuerpo = new LinkedHashMap<>();
-        cuerpo.put("status", status.value());
-        cuerpo.put("error", e.getCodigo());
-        cuerpo.put("excepcion", e.getClass().getSimpleName());
-        cuerpo.put("mensaje", e.getMessage());
+    private ResponseEntity<ErrorRespuesta> responder(HttpStatus status, JuegoException e) {
+        ErrorRespuesta cuerpo = new ErrorRespuesta(status.value(), e.getCodigo(),
+                e.getClass().getSimpleName(), e.getMessage());
         return ResponseEntity.status(status).contentType(JSON_UTF8).body(cuerpo);
     }
 }

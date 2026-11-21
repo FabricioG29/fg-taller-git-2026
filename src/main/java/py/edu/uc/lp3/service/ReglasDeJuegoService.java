@@ -3,6 +3,9 @@ package py.edu.uc.lp3.service;
 import py.edu.uc.lp3.domain.Arma;
 import py.edu.uc.lp3.domain.Impacto;
 import py.edu.uc.lp3.domain.Jugador;
+import py.edu.uc.lp3.service.dto.EvaluacionMunicion;
+import py.edu.uc.lp3.service.dto.ReglaDanioRequest;
+import py.edu.uc.lp3.service.dto.ReglaMunicionRequest;
 
 /**
  * Las dos reglas del juego. Viven en la capa service: deciden y lanzan la
@@ -28,4 +31,13 @@ public interface ReglasDeJuegoService {
      * queda) y se gasta; el resto baja la vida, que nunca queda negativa.
      */
     Impacto calcularImpacto(int vida, int armadura, int danio);
+
+    /**
+     * REGLA 1 publicada (POO-09): ¿alcanza el cargador para la ráfaga? Si no alcanza lanza
+     * SinMunicionException (409). Sin estado: la usan los compañeros por HTTP.
+     */
+    EvaluacionMunicion evaluarMunicion(ReglaMunicionRequest pedido);
+
+    /** REGLA 2 publicada (POO-09): valida el pedido y aplica {@link #calcularImpacto}. */
+    Impacto evaluarDanio(ReglaDanioRequest pedido);
 }

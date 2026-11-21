@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import py.edu.uc.lp3.constants.ApiPaths;
 import py.edu.uc.lp3.domain.Equipo;
 import py.edu.uc.lp3.service.ArmaService;
@@ -16,6 +17,7 @@ import py.edu.uc.lp3.service.dto.PruebaPistola;
  */
 @RestController
 @RequestMapping(ApiPaths.ARMAS)
+@Tag(name = "POO-06", description = "Endpoints heredados de POO-06 (no persisten).")
 public class ArmaController {
 
     private final ArmaService armaService;

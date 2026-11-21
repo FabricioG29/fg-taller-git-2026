@@ -12,6 +12,9 @@ import py.edu.uc.lp3.domain.Granada;
 import py.edu.uc.lp3.domain.Impacto;
 import py.edu.uc.lp3.domain.Jugador;
 import py.edu.uc.lp3.domain.Pistola;
+import py.edu.uc.lp3.service.dto.EvaluacionMunicion;
+import py.edu.uc.lp3.service.dto.ReglaDanioRequest;
+import py.edu.uc.lp3.service.dto.ReglaMunicionRequest;
 import py.edu.uc.lp3.service.impl.ReglasDeJuegoServiceImpl;
 import py.edu.uc.lp3exceptions.GranadaUsadaException;
 import py.edu.uc.lp3exceptions.JugadorEliminadoException;
@@ -90,5 +93,17 @@ class ReglasDeJuegoServiceTest {
         assertThrows(ValorInvalidoException.class, () -> reglas.calcularImpacto(100, 100, -5));
         assertThrows(ValorInvalidoException.class, () -> reglas.calcularImpacto(500, 0, 10));
         assertThrows(ValorInvalidoException.class, () -> reglas.calcularImpacto(100, -1, 10));
+    }
+
+    @Test
+    void reglasPublicadasAceptanYRechazanSinTocarLaBase() {
+        EvaluacionMunicion alcanza = reglas.evaluarMunicion(new ReglaMunicionRequest(3, null, 2));
+        assertEquals(1, alcanza.cargadorDespues());
+        assertThrows(SinMunicionException.class, () -> reglas.evaluarMunicion(new ReglaMunicionRequest(3, 1, 5)));
+        assertThrows(ValorInvalidoException.class, () -> reglas.evaluarMunicion(new ReglaMunicionRequest(null, 1, 1)));
+
+        assertEquals(82, reglas.evaluarDanio(new ReglaDanioRequest(100, 100, 36)).vidaRestante());
+        assertThrows(JugadorEliminadoException.class, () -> reglas.evaluarDanio(new ReglaDanioRequest(0, 50, 10)));
+        assertThrows(ValorInvalidoException.class, () -> reglas.evaluarDanio(new ReglaDanioRequest(150, 0, 10)));
     }
 }
