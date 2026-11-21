@@ -12,13 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import py.edu.uc.lp3exceptions.JugadorEliminadoException;
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
-
 /**
  * Jugador de CS2: tiene vida y armadura (chaleco). Es la segunda clase
  * persistida que necesita la simulación: es quien dispara y quien recibe el daño.
- * Vida y armadura solo cambian por mensajes del dominio, nunca por setters.
+ * Vida y armadura solo cambian por mensajes (aplicarImpacto), nunca por setters.
+ * La regla de daño y las validaciones están en la capa service (JugadorService y
+ * ReglasDeJuegoService); la entidad solo guarda el estado.
  */
 @Entity
 @Table(name = "jugador")
@@ -53,56 +52,19 @@ public class Jugador implements Inspeccionable {
 
     /** Sobrecarga: jugador que ya viene herido o sin chaleco. */
     public Jugador(String nombre, Equipo equipo, int vida, int armadura) {
-        if (nombre == null || nombre.isBlank() || nombre.trim().length() > 40) {
-            throw new ValorInvalidoException("El nombre del jugador es obligatorio (1..40 caracteres)");
-        }
-        if (equipo == null || equipo == Equipo.AMBOS) {
-            throw new ValorInvalidoException("Un jugador juega para TERRORISTAS o ANTITERRORISTAS");
-        }
-        if (vida < 1 || vida > VIDA_MAXIMA) {
-            throw new ValorInvalidoException("Vida inválida: " + vida + " (1.." + VIDA_MAXIMA + ")");
-        }
-        if (armadura < 0 || armadura > ARMADURA_MAXIMA) {
-            throw new ValorInvalidoException("Armadura inválida: " + armadura + " (0.." + ARMADURA_MAXIMA + ")");
-        }
-        this.nombre = nombre.trim();
+        this.nombre = nombre;
         this.equipo = equipo;
         this.vida = vida;
         this.armadura = armadura;
     }
 
     /**
-     * REGLA 2 (daño con chaleco): la armadura absorbe la mitad del daño (hasta lo
-     * que le queda) y se gasta en esa cantidad; el resto baja la vida, que nunca
-     * queda negativa. Con vida 0 el jugador queda eliminado.
+     * Deja vida y chaleco como los calculó la regla de daño (ReglasDeJuegoService).
+     * Nunca quedan negativos.
      */
-    public Impacto recibirDanio(int danio) {
-        if (danio < 0) {
-            throw new ValorInvalidoException("El daño no puede ser negativo: " + danio);
-        }
-        verificarQuePuedeRecibirDanio();
-        int absorbido = Math.min(armadura, danio / 2);
-        armadura -= absorbido;
-        int aLaVida = Math.min(vida, danio - absorbido);
-        vida -= aLaVida;
-        return new Impacto(danio, absorbido, aLaVida, vida, armadura, estaEliminado());
-    }
-
-    /** Antes de disparar: tiene que seguir vivo y el arma tiene que ser de su bando (o de AMBOS). */
-    public void verificarQuePuedeDisparar(Arma arma) {
-        if (estaEliminado()) {
-            throw new JugadorEliminadoException(nombre + " está eliminado y no puede disparar");
-        }
-        if (arma == null || !arma.esDelEquipo(equipo)) {
-            throw new ValorInvalidoException((arma == null ? "El arma" : arma.getNombre())
-                    + " no es de " + equipo + ": " + nombre + " no la puede usar");
-        }
-    }
-
-    public void verificarQuePuedeRecibirDanio() {
-        if (estaEliminado()) {
-            throw new JugadorEliminadoException(nombre + " ya está eliminado: no puede recibir más daño");
-        }
+    public void aplicarImpacto(Impacto impacto) {
+        this.vida = Math.max(0, impacto.vidaRestante());
+        this.armadura = Math.max(0, impacto.armaduraRestante());
     }
 
     @JsonProperty("eliminado")

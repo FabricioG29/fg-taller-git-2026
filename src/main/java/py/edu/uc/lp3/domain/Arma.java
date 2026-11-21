@@ -17,8 +17,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
-
 /**
  * Clase base de todo el dominio CS2.
  * Concentra lo común (nombre, precio, equipo, daño base) y declara el contrato
@@ -28,6 +26,8 @@ import py.edu.uc.lp3exceptions.ValorInvalidoException;
  * Persistencia: toda la familia vive en UNA tabla "arma" (SINGLE_TABLE) con la
  * columna "tipo" como discriminador. En el JSON el subtipo sale en "tipo".
  * No hay setters: JPA usa el constructor vacío protected y accede a los campos.
+ * La entidad solo guarda su estado: las validaciones, las reglas y las
+ * excepciones viven en la capa service (ArmaService, ReglasDeJuegoService).
  */
 @Entity
 @Table(name = "arma")
@@ -44,9 +44,6 @@ import py.edu.uc.lp3exceptions.ValorInvalidoException;
 })
 @JsonPropertyOrder({"id", "nombre", "precio", "equipo", "danio", "tienda"})
 public abstract class Arma implements Inspeccionable {
-
-    public static final int PRECIO_MAXIMO = 10_000;
-    public static final int DANIO_MAXIMO = 500;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,14 +65,8 @@ public abstract class Arma implements Inspeccionable {
     }
 
     protected Arma(String nombre, int precio, Equipo equipo, int danio) {
-        if (equipo == null) {
-            throw new ValorInvalidoException("El equipo es obligatorio");
-        }
-        if (danio < 0 || danio > DANIO_MAXIMO) {
-            throw new ValorInvalidoException("Daño inválido: " + danio + " (0.." + DANIO_MAXIMO + ")");
-        }
-        this.nombre = validarNombre(nombre);
-        this.precio = validarPrecio(precio);
+        this.nombre = nombre;
+        this.precio = precio;
         this.equipo = equipo;
         this.danio = danio;
     }
@@ -92,14 +83,19 @@ public abstract class Arma implements Inspeccionable {
                 "Esta arma no usa munición");
     }
 
-    /** PATCH: cambiar el nombre pasa por la misma regla que el constructor. */
-    public void renombrar(String nuevoNombre) {
-        this.nombre = validarNombre(nuevoNombre);
+    /** ¿Se puede usar ahora? Por defecto sí; ArmaDeFuego y Granada lo redefinen. */
+    public EstadoUso estadoDeUso() {
+        return EstadoUso.LISTA;
     }
 
-    /** PATCH: la tienda ajusta el precio, siempre dentro del rango legal. */
+    /** PATCH: ArmaService ya validó el nombre. */
+    public void renombrar(String nuevoNombre) {
+        this.nombre = nuevoNombre;
+    }
+
+    /** PATCH: ArmaService ya validó el rango del precio. */
     public void cambiarPrecio(int nuevoPrecio) {
-        this.precio = validarPrecio(nuevoPrecio);
+        this.precio = nuevoPrecio;
     }
 
     /** Cómo aparece en la tienda. Igual para todas: no se repite en cada hija. */
@@ -141,22 +137,5 @@ public abstract class Arma implements Inspeccionable {
     @JsonProperty("danio")
     protected int getDanioBase() {
         return danio;
-    }
-
-    private static String validarNombre(String nombre) {
-        if (nombre == null || nombre.isBlank()) {
-            throw new ValorInvalidoException("El nombre del arma no puede estar vacío");
-        }
-        if (nombre.trim().length() > 60) {
-            throw new ValorInvalidoException("El nombre del arma no puede superar 60 caracteres");
-        }
-        return nombre.trim();
-    }
-
-    private static int validarPrecio(int precio) {
-        if (precio < 0 || precio > PRECIO_MAXIMO) {
-            throw new ValorInvalidoException("Precio inválido: " + precio + " (0.." + PRECIO_MAXIMO + ")");
-        }
-        return precio;
     }
 }

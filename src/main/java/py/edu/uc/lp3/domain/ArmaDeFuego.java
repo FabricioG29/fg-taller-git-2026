@@ -3,15 +3,15 @@ package py.edu.uc.lp3.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
-import py.edu.uc.lp3exceptions.SinMunicionException;
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Arma que dispara balas. Controla la munición: nadie de afuera puede
+ * Arma que dispara balas. Guarda la munición: nadie de afuera puede
  * cambiar el cargador ni la reserva, solo disparar() y recargar().
+ * La regla de munición (no disparar con el cargador vacío) la aplica ReglasDeJuegoService
+ * antes de llamar a disparar().
  * Las hijas especializan el daño y las balas por disparo con dos "ganchos"
  * protected; el control de munición NO se puede pisar (métodos final).
  */
@@ -33,21 +33,6 @@ public abstract class ArmaDeFuego extends Arma {
                           float precision, int capacidadCargador, int municionReserva,
                           float tiempoRecarga) {
         super(nombre, precio, equipo, danio);
-        if (danio <= 0) {
-            throw new ValorInvalidoException("Un arma de fuego debe hacer daño (> 0)");
-        }
-        if (!Float.isFinite(precision) || precision <= 0f || precision > 1f) {
-            throw new ValorInvalidoException("Precisión inválida: " + precision + " (0..1]");
-        }
-        if (capacidadCargador <= 0) {
-            throw new ValorInvalidoException("La capacidad del cargador debe ser > 0");
-        }
-        if (municionReserva < 0) {
-            throw new ValorInvalidoException("La munición de reserva no puede ser negativa");
-        }
-        if (!Float.isFinite(tiempoRecarga) || tiempoRecarga <= 0f) {
-            throw new ValorInvalidoException("El tiempo de recarga debe ser > 0");
-        }
         this.precision = precision;
         this.capacidadCargador = capacidadCargador;
         this.municionCargador = capacidadCargador; // sale de la tienda con el cargador lleno
@@ -61,14 +46,17 @@ public abstract class ArmaDeFuego extends Arma {
         return disparar();
     }
 
-    /**
-     * REGLA 1 (munición): cada disparo gasta balas del cargador; con el cargador
-     * vacío el arma no dispara y lanza SinMunicionException (hay que recargar).
-     */
+    /** Sin balas en el cargador el arma no está lista: el service lo rechaza (SinMunicionException). */
+    @Override
+    public EstadoUso estadoDeUso() {
+        return municionCargador == 0 ? EstadoUso.SIN_MUNICION : EstadoUso.LISTA;
+    }
+
+    /** Gasta las balas de un disparo. Con el cargador vacío solo hace "click" y el estado no cambia. */
     public final ResultadoAccion disparar() {
         if (municionCargador == 0) {
-            throw new SinMunicionException(getNombre() + ": cargador vacío (reserva "
-                    + municionReserva + "), hay que recargar");
+            return new ResultadoAccion(getNombre(), getClass().getSimpleName(), "click", 0,
+                    "Cargador vacío, hay que recargar");
         }
         int balas = Math.min(balasPorDisparo(), municionCargador);
         municionCargador -= balas;
@@ -77,12 +65,8 @@ public abstract class ArmaDeFuego extends Arma {
                 balas + " bala(s), quedan " + municionCargador + "/" + municionReserva);
     }
 
-    /** Sobrecarga del mensaje: varios disparos seguidos. Reutiliza disparar(), no duplica reglas. */
+    /** Sobrecarga del mensaje: varios disparos seguidos. Reutiliza disparar(); el service valida "veces". */
     public final List<ResultadoAccion> disparar(int veces) {
-        if (veces <= 0 || veces > capacidadCargador) {
-            throw new ValorInvalidoException("Cantidad de disparos inválida: " + veces
-                    + " (1.." + capacidadCargador + ")");
-        }
         List<ResultadoAccion> resultados = new ArrayList<>();
         for (int i = 0; i < veces; i++) {
             resultados.add(disparar());

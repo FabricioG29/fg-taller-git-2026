@@ -20,7 +20,7 @@ import py.edu.uc.lp3.service.SimulacionService;
 
 /**
  * Entrada HTTP de la simulación. Solo dispara los casos de uso: las reglas de
- * munición y de daño están en ArmaDeFuego y en Jugador.
+ * munición y de daño están en ReglasDeJuegoService (capa service).
  */
 @RestController
 public class SimulacionController {
@@ -34,9 +34,8 @@ public class SimulacionController {
     /** POST /api/simulaciones/disparos → 201: crea los disparos y devuelve el estado ya persistido. */
     @PostMapping(ApiPaths.SIMULACION_DISPAROS)
     public ResponseEntity<ReporteSimulacion> simular(@RequestBody SimulacionRequest pedido) {
-        pedido.validar();
         ReporteSimulacion reporte = simulacionService.simularDisparos(
-                pedido.atacanteId(), pedido.objetivoId(), pedido.armaId(), pedido.vecesOUna());
+                pedido.atacanteId(), pedido.objetivoId(), pedido.armaId(), pedido.veces());
         return ResponseEntity.status(HttpStatus.CREATED).body(reporte);
     }
 

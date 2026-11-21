@@ -1,7 +1,5 @@
 package py.edu.uc.lp3.domain;
 
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,14 +14,12 @@ public class Inventario {
 
     private final List<Arma> armas = new ArrayList<>();
 
-    public void agregar(Arma arma) {
-        if (arma == null) {
-            throw new ValorInvalidoException("No se puede agregar un arma nula");
+    /** Agrega el arma si hay lugar. Devuelve false si es nula o si el inventario está lleno. */
+    public boolean agregar(Arma arma) {
+        if (arma == null || armas.size() >= MAXIMO_ARMAS) {
+            return false;
         }
-        if (armas.size() >= MAXIMO_ARMAS) {
-            throw new ValorInvalidoException("Inventario lleno (máx. " + MAXIMO_ARMAS + ")");
-        }
-        armas.add(arma);
+        return armas.add(arma);
     }
 
     public List<ResultadoAccion> usarTodas() {

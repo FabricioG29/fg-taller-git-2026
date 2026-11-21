@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
-
 /** Rifle de asalto: el modo de disparo decide las balas por disparo. */
 @Entity
 @DiscriminatorValue("RIFLE")
@@ -26,17 +24,13 @@ public class RifleAsalto extends ArmaDeFuego {
                        float precision, int capacidadCargador, int municionReserva,
                        float cadenciaDisparo) {
         super(nombre, precio, equipo, danio, precision, capacidadCargador, municionReserva, 2.5f);
-        if (!Float.isFinite(cadenciaDisparo) || cadenciaDisparo <= 0f) {
-            throw new ValorInvalidoException("La cadencia debe ser > 0");
-        }
         this.cadenciaDisparo = cadenciaDisparo;
     }
 
     public void cambiarModo(ModoDisparo m) {
-        if (m == null) {
-            throw new ValorInvalidoException("El modo de disparo no puede ser nulo");
+        if (m != null) {
+            this.modoDisparo = m;
         }
-        this.modoDisparo = m;
     }
 
     public ModoDisparo getModoDisparo() {

@@ -15,13 +15,15 @@ import py.edu.uc.lp3.domain.ResultadoAccion;
 import py.edu.uc.lp3.repository.ArmaRepository;
 import py.edu.uc.lp3.repository.DisparoRepository;
 import py.edu.uc.lp3.repository.JugadorRepository;
+import py.edu.uc.lp3.service.ReglasDeJuegoService;
 import py.edu.uc.lp3.service.SimulacionService;
 import py.edu.uc.lp3exceptions.RecursoNoEncontradoException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /**
- * Orquesta la simulación de disparos. No calcula daño ni toca munición: le manda
- * mensajes al Arma (regla 1) y al Jugador (regla 2) y guarda lo que pasó.
+ * Orquesta la simulación de disparos: le pide a ReglasDeJuegoService que aplique
+ * la regla de munición y la de daño, cambia el estado de las entidades con sus
+ * mensajes (usar, aplicarImpacto) y guarda lo que pasó.
  * @Transactional: si una regla lanza una excepción a mitad de camino, se deshace
  * todo (munición, vida y disparos ya registrados). La base queda como antes.
  */
@@ -33,17 +35,23 @@ public class SimulacionServiceImpl implements SimulacionService {
     private final ArmaRepository armaRepository;
     private final JugadorRepository jugadorRepository;
     private final DisparoRepository disparoRepository;
+    private final ReglasDeJuegoService reglas;
 
     public SimulacionServiceImpl(ArmaRepository armaRepository, JugadorRepository jugadorRepository,
-                                 DisparoRepository disparoRepository) {
+                                 DisparoRepository disparoRepository, ReglasDeJuegoService reglas) {
         this.armaRepository = armaRepository;
         this.jugadorRepository = jugadorRepository;
         this.disparoRepository = disparoRepository;
+        this.reglas = reglas;
     }
 
     @Override
     @Transactional
-    public ReporteSimulacion simularDisparos(Long atacanteId, Long objetivoId, Long armaId, int veces) {
+    public ReporteSimulacion simularDisparos(Long atacanteId, Long objetivoId, Long armaId, Integer vecesPedidas) {
+        Validador.requerido(atacanteId, "atacanteId");
+        Validador.requerido(objetivoId, "objetivoId");
+        Validador.requerido(armaId, "armaId");
+        int veces = vecesPedidas == null ? 1 : vecesPedidas;
         if (veces < 1 || veces > MAXIMO_DISPAROS) {
             throw new ValorInvalidoException("veces debe estar entre 1 y " + MAXIMO_DISPAROS);
         }
@@ -55,13 +63,16 @@ public class SimulacionServiceImpl implements SimulacionService {
         Arma arma = armaRepository.findById(armaId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Arma", armaId));
 
-        atacante.verificarQuePuedeDisparar(arma);   // vivo y arma de su bando
-        objetivo.verificarQuePuedeRecibirDanio();   // no se le dispara a un eliminado
+        reglas.verificarQuePuedeDisparar(atacante, arma);   // vivo y arma de su bando
+        reglas.verificarQuePuedeRecibirDanio(objetivo);     // no se le dispara a un eliminado
 
         List<Disparo> disparos = new ArrayList<>();
         for (int i = 0; i < veces && !objetivo.estaEliminado(); i++) {
-            ResultadoAccion resultado = arma.usar();                    // regla 1: munición (polimórfico)
-            Impacto impacto = objetivo.recibirDanio(resultado.danio()); // regla 2: chaleco y vida
+            reglas.verificarQuePuedeUsarse(arma);                           // regla 1: munición
+            ResultadoAccion resultado = arma.usar();                        // cada hija se usa a su modo
+            Impacto impacto = reglas.calcularImpacto(objetivo.getVida(), objetivo.getArmadura(),
+                    resultado.danio());                                     // regla 2: chaleco y vida
+            objetivo.aplicarImpacto(impacto);
             disparos.add(disparoRepository.save(new Disparo(atacante, objetivo, arma, resultado, impacto)));
         }
         armaRepository.save(arma);

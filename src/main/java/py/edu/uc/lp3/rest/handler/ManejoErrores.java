@@ -18,7 +18,7 @@ import py.edu.uc.lp3exceptions.SinMunicionException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
 
 /**
- * Un handler por cada tipo de la jerarquía: el dominio lanza, acá solo se
+ * Un handler por cada tipo de la jerarquía: la capa service lanza, acá solo se
  * traduce a JSON y código HTTP. El cliente distingue a las hermanas por el
  * código HTTP y por el campo "error".
  */

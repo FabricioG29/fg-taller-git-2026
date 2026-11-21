@@ -11,12 +11,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import py.edu.uc.lp3exceptions.ValorInvalidoException;
-
 /**
  * Registro persistido de un disparo de la simulación (tercera clase persistida).
  * Guarda quién disparó a quién, con qué arma y cómo se repartió el daño.
- * Es inmutable: una vez registrado, la historia no se edita.
+ * Es inmutable: una vez registrado, la historia no se edita. Lo crea SimulacionService.
  */
 @Entity
 @Table(name = "disparo")
@@ -59,9 +57,6 @@ public class Disparo implements Inspeccionable {
     }
 
     public Disparo(Jugador atacante, Jugador objetivo, Arma arma, ResultadoAccion resultado, Impacto impacto) {
-        if (atacante == null || objetivo == null || arma == null || resultado == null || impacto == null) {
-            throw new ValorInvalidoException("Un disparo necesita atacante, objetivo, arma, resultado e impacto");
-        }
         this.momento = LocalDateTime.now();
         this.atacanteId = atacante.getId();
         this.atacante = atacante.getNombre();
