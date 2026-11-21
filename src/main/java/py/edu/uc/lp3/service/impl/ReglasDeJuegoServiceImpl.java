@@ -7,6 +7,7 @@ import py.edu.uc.lp3.domain.EstadoUso;
 import py.edu.uc.lp3.domain.Impacto;
 import py.edu.uc.lp3.domain.Jugador;
 import py.edu.uc.lp3.service.ReglasDeJuegoService;
+import py.edu.uc.lp3exceptions.GranadaUsadaException;
 import py.edu.uc.lp3exceptions.JugadorEliminadoException;
 import py.edu.uc.lp3exceptions.SinMunicionException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
@@ -24,6 +25,9 @@ public class ReglasDeJuegoServiceImpl implements ReglasDeJuegoService {
         EstadoUso estado = arma.estadoDeUso(); // cada hija informa su estado (sobreescritura)
         if (estado == EstadoUso.SIN_MUNICION) {
             throw new SinMunicionException(arma.getNombre() + ": cargador vacío, hay que recargar");
+        }
+        if (estado == EstadoUso.USADA) {
+            throw new GranadaUsadaException(arma.getNombre() + " ya fue lanzada: una granada es de un solo uso");
         }
     }
 

@@ -6,10 +6,11 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
- * Granada: no tiene munición, se lanza y tiene cooldown.
+ * Granada: un consumible de un solo uso. Se lanza, explota y queda usada; no
+ * tiene munición, ni recarga, ni tiempo de enfriamiento (como en CS2).
+ * Un segundo lanzamiento lo rechaza ReglasDeJuegoService con GranadaUsadaException (409).
  * detonar() es private: nadie de afuera puede detonarla sin lanzarla.
- * esLetal NO es un atributo: se deduce del daño (evita estados contradictorios
- * como "letal con daño 0").
+ * esLetal NO es un atributo: se deduce del daño.
  */
 @Entity
 @DiscriminatorValue("GRANADA")
@@ -18,20 +19,19 @@ public class Granada extends Arma {
     private float radioExplosion;   // metros
     private float tiempoActivacion; // segundos hasta detonar
     private String efecto;
-    private long cooldownMs;
-    private long ultimoLanzamientoMs = Long.MIN_VALUE;
+    private boolean usada;
 
     /** Solo para JPA. */
     protected Granada() {
     }
 
     public Granada(String nombre, int precio, Equipo equipo, int danio,
-                   float radioExplosion, float tiempoActivacion, String efecto, long cooldownMs) {
+                   float radioExplosion, float tiempoActivacion, String efecto) {
         super(nombre, precio, equipo, danio);
         this.radioExplosion = radioExplosion;
         this.tiempoActivacion = tiempoActivacion;
-        this.efecto = efecto.trim();
-        this.cooldownMs = cooldownMs;
+        this.efecto = efecto;
+        this.usada = false;
     }
 
     /** Para una granada, "usarse" es lanzarse. */
@@ -40,30 +40,20 @@ public class Granada extends Arma {
         return lanzar();
     }
 
+    /** Lanzarla la gasta. Si ya estaba usada no explota de nuevo (el service lo rechaza antes). */
     public ResultadoAccion lanzar() {
-        long espera = esperaRestanteMs();
-        if (espera > 0) {
-            return new ResultadoAccion(getNombre(), getClass().getSimpleName(), "en cooldown", 0,
-                    "Esperar " + espera + " ms");
+        if (usada) {
+            return new ResultadoAccion(getNombre(), getClass().getSimpleName(), "ya usada", 0,
+                    "La granada ya explotó; es de un solo uso");
         }
-        ultimoLanzamientoMs = System.currentTimeMillis();
+        usada = true;
         return detonar();
     }
 
-    /** Una granada no tiene cargador: "recargar" es esperar a que termine el cooldown. */
+    /** Una granada usada ya no se puede usar: no se recarga ni se enfría. */
     @Override
-    public ResultadoAccion recargar() {
-        long espera = esperaRestanteMs();
-        return new ResultadoAccion(getNombre(), getClass().getSimpleName(), "cooldown", 0,
-                espera > 0 ? "Disponible en " + espera + " ms" : "Lista para lanzar");
-    }
-
-    private long esperaRestanteMs() {
-        if (ultimoLanzamientoMs == Long.MIN_VALUE) {
-            return 0;
-        }
-        long transcurrido = System.currentTimeMillis() - ultimoLanzamientoMs;
-        return Math.max(0, cooldownMs - transcurrido);
+    public EstadoUso estadoDeUso() {
+        return usada ? EstadoUso.USADA : EstadoUso.LISTA;
     }
 
     private ResultadoAccion detonar() {
@@ -74,8 +64,7 @@ public class Granada extends Arma {
 
     @Override
     public String inspeccionar() {
-        long espera = esperaRestanteMs();
-        return super.inspeccionar() + (espera > 0 ? " - en cooldown " + espera + " ms" : " - lista");
+        return super.inspeccionar() + (usada ? " - usada" : " - sin usar");
     }
 
     public float getRadioExplosion() {
@@ -90,8 +79,8 @@ public class Granada extends Arma {
         return efecto;
     }
 
-    public long getCooldownMs() {
-        return cooldownMs;
+    public boolean isUsada() {
+        return usada;
     }
 
     @JsonProperty("letal")

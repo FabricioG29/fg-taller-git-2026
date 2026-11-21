@@ -8,10 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import py.edu.uc.lp3.domain.Equipo;
 import py.edu.uc.lp3.domain.EstadoUso;
+import py.edu.uc.lp3.domain.Granada;
 import py.edu.uc.lp3.domain.Impacto;
 import py.edu.uc.lp3.domain.Jugador;
 import py.edu.uc.lp3.domain.Pistola;
 import py.edu.uc.lp3.service.impl.ReglasDeJuegoServiceImpl;
+import py.edu.uc.lp3exceptions.GranadaUsadaException;
 import py.edu.uc.lp3exceptions.JugadorEliminadoException;
 import py.edu.uc.lp3exceptions.SinMunicionException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
@@ -29,6 +31,18 @@ class ReglasDeJuegoServiceTest {
         assertEquals(27, p250.usar().danio());
         assertEquals(EstadoUso.SIN_MUNICION, p250.estadoDeUso());
         assertThrows(SinMunicionException.class, () -> reglas.verificarQuePuedeUsarse(p250));
+    }
+
+    @Test
+    void unaGranadaEsDeUnSoloUso() {
+        Granada he = new Granada("HE Grenade", 300, Equipo.AMBOS, 98, 5.0f, 1.5f, "Fragmentación");
+
+        reglas.verificarQuePuedeUsarse(he);
+        assertEquals(98, he.usar().danio());
+        assertTrue(he.isUsada());
+        assertEquals(EstadoUso.USADA, he.estadoDeUso());
+        assertThrows(GranadaUsadaException.class, () -> reglas.verificarQuePuedeUsarse(he));
+        assertEquals("sin recarga", he.recargar().accion()); // no se recarga ni se enfría
     }
 
     @Test

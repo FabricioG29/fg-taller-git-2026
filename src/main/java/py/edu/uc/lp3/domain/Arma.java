@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
  * Clase base de todo el dominio CS2.
  * Concentra lo común (nombre, precio, equipo, daño base) y declara el contrato
  * {@link #usar()}: toda arma sabe "usarse", pero el padre no puede saber CÓMO
- * (un rifle dispara y gasta balas; una granada se lanza y tiene cooldown).
+ * (un rifle dispara y gasta balas; una granada se lanza una sola vez).
  *
  * Persistencia: toda la familia vive en UNA tabla "arma" (SINGLE_TABLE) con la
  * columna "tipo" como discriminador. En el JSON el subtipo sale en "tipo".

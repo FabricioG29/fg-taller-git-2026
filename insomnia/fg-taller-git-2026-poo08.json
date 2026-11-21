@@ -124,7 +124,7 @@
       "settingFollowRedirects": "global",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"tipo\": \"granada\",\n  \"nombre\": \"HE Grenade\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 98,\n  \"radioExplosion\": 5.0,\n  \"tiempoActivacion\": 1.5,\n  \"efecto\": \"Explosión de fragmentación\",\n  \"cooldownMs\": 3000\n}"
+        "text": "{\n  \"tipo\": \"granada\",\n  \"nombre\": \"HE Grenade\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 98,\n  \"radioExplosion\": 5.0,\n  \"tiempoActivacion\": 1.5,\n  \"efecto\": \"Explosión de fragmentación\"\n}"
       },
       "headers": [
         {

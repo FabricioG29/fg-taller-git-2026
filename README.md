@@ -108,7 +108,7 @@ RuntimeException
 
 **Interfaz y repositorio.** El controller depende de `ArmaRepository`, una **interface**; Spring Data genera la implementación. El controller no sabe si atrás hay H2, PostgreSQL o un repositorio falso de prueba: solo conoce el contrato. Es la misma idea que el protocolo de POO-07: se programa contra la interface y se puede cambiar la implementación sin tocar a quien la usa. Si mañana cambiamos H2 por otra base, se tocan solo el driver en `pom.xml` y las propiedades de `application.properties`; dominio, repositorios y controllers se quedan quietos.
 
-**Protocolo del dominio.** `Inspeccionable` (`String inspeccionar()`) la implementan **tres familias distintas**: `Arma` (con `ArmaDeFuego` y `Granada` que la sobreescriben para sumar munición o cooldown), `Jugador` y `Disparo`. `GET /api/inspeccion` arma una `List<Inspeccionable>` con todo lo persistido y les manda el mismo mensaje sin preguntar el tipo.
+**Protocolo del dominio.** `Inspeccionable` (`String inspeccionar()`) la implementan **tres familias distintas**: `Arma` (con `ArmaDeFuego` y `Granada` que la sobreescriben para sumar munición o si ya se usó), `Jugador` y `Disparo`. `GET /api/inspeccion` arma una `List<Inspeccionable>` con todo lo persistido y les manda el mismo mensaje sin preguntar el tipo.
 
 **Ocultamiento.** Las reglas numéricas las sostienen los constructores y los mensajes del dominio (`cambiarPrecio`, `recibirDanio`, `disparar`). No hay setters públicos: JPA usa un constructor vacío `protected` (solo visible para la jerarquía y para Hibernate) y lee y escribe los campos por reflexión. El JSON tampoco llega a los campos: los records de `rest/dto` llaman al constructor de negocio. Pruebas 20 y 21 de Insomnia: un `POST` con daño negativo responde 400 y el `GET` siguiente muestra la misma colección que antes. La prueba 25 muestra que una simulación que falla a mitad de camino (`SIN_MUNICION`) deja el arma y el jugador como estaban.
 
@@ -145,8 +145,8 @@ Sin Insomnia: `bash insomnia/recorrido.sh` hace el mismo recorrido con `curl`.
 
 | Método | Declarado en | Sobreescrito en | Qué hace cada una |
 |---|---|---|---|
-| `usar()` | `Arma` (**abstracto**) | `ArmaDeFuego`, `Granada` | El arma de fuego dispara y gasta munición; la granada se lanza y respeta el cooldown |
-| `recargar()` | `Arma` (por defecto: "sin recarga") | `ArmaDeFuego` (`final`), `Granada` | El arma de fuego llena el cargador desde la reserva; la granada informa cuánto falta del cooldown |
+| `usar()` | `Arma` (**abstracto**) | `ArmaDeFuego`, `Granada` | El arma de fuego dispara y gasta munición; la granada se lanza **una sola vez** (consumible); un segundo uso responde 409 `GRANADA_USADA` |
+| `recargar()` | `Arma` (por defecto: "sin recarga") | `ArmaDeFuego` (`final`) | El arma de fuego llena el cargador desde la reserva; la granada hereda "sin recarga" (no se recarga ni tiene cooldown) |
 | `calcularDanio()` | `ArmaDeFuego` (daño × precisión) | `Pistola`, `Francotirador`, `Escopeta`, `Subfusil` | Pistola: llama a `super` y resta 20 % en ráfaga. Francotirador: con zoom **reemplaza** al padre (daño × (1 + penetración)). Escopeta: `super` × perdigones. Subfusil: `super` ajustado por retroceso |
 | `balasPorDisparo()` | `ArmaDeFuego` (1) | `Pistola`, `RifleAsalto`, `Subfusil` | Pistola: 1 o 3 en ráfaga. Rifle: lo decide el `ModoDisparo`. Subfusil: 2 |
 
@@ -215,8 +215,7 @@ classDiagram
   class Granada {
     -float radioExplosion
     -String efecto
-    -long cooldownMs
-    -long ultimoLanzamientoMs
+    -boolean usada
     +usar() ResultadoAccion
     +lanzar() ResultadoAccion
     +recargar() ResultadoAccion

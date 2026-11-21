@@ -10,7 +10,11 @@ import py.edu.uc.lp3.domain.Jugador;
  */
 public interface ReglasDeJuegoService {
 
-    /** REGLA 1 (munición): el arma tiene que estar lista para usarse (cargador con balas). */
+    /**
+     * REGLA 1 (munición): el arma tiene que estar lista para usarse. Un arma de fuego
+     * necesita balas en el cargador (SinMunicionException); una granada no puede estar
+     * ya lanzada (GranadaUsadaException).
+     */
     void verificarQuePuedeUsarse(Arma arma);
 
     /** REGLA 2 (daño): el atacante tiene que estar vivo y el arma ser de su bando (o de AMBOS). */

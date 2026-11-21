@@ -5,7 +5,7 @@ J="Content-Type: application/json"
 p(){ echo; echo "### $1"; echo "$2 $3"; if [ -n "$4" ]; then curl -s -w "\n-> HTTP %{http_code}\n" -X "$2" -H "$J" -d "$4" "$B$3"; else curl -s -w "\n-> HTTP %{http_code}\n" -X "$2" "$B$3"; fi; }
 p "01 GET / (servicio vivo)" GET '/'
 p "02 POST crear pistola Glock-18" POST '/api/armas' '{"tipo": "pistola", "nombre": "Glock-18", "precio": 200, "equipo": "TERRORISTAS", "danio": 30}'
-p "03 POST crear granada HE" POST '/api/armas' '{"tipo": "granada", "nombre": "HE Grenade", "precio": 300, "equipo": "AMBOS", "danio": 98, "radioExplosion": 5.0, "tiempoActivacion": 1.5, "efecto": "Explosión de fragmentación", "cooldownMs": 3000}'
+p "03 POST crear granada HE" POST '/api/armas' '{"tipo": "granada", "nombre": "HE Grenade", "precio": 300, "equipo": "AMBOS", "danio": 98, "radioExplosion": 5.0, "tiempoActivacion": 1.5, "efecto": "Explosión de fragmentación"}'
 p "04 POST crear rifle AK-47" POST '/api/armas' '{"tipo": "rifle", "nombre": "AK-47", "precio": 2700, "equipo": "TERRORISTAS", "danio": 36, "precision": 0.8, "cargador": 30, "reserva": 90, "cadencia": 10}'
 p "05 GET listar armas" GET '/api/armas'
 p "06 GET arma por id" GET '/api/armas/1'

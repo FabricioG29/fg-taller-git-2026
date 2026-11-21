@@ -72,8 +72,7 @@ public class ArmaServiceImpl implements ArmaService {
                     Validador.entero(g.danio(), "danio", 0, DANIO_MAXIMO),
                     Validador.positivo(g.radioExplosion(), "radioExplosion"),
                     Validador.decimal(g.tiempoActivacion(), "tiempoActivacion", 0f, 60f),
-                    Validador.texto(g.efecto(), "efecto", 100),
-                    cooldown(g.cooldownMs()));
+                    Validador.texto(g.efecto(), "efecto", 100));
         };
         return armaRepository.save(arma);
     }
@@ -181,19 +180,11 @@ public class ArmaServiceImpl implements ArmaService {
         return Validador.entero(reserva, "reserva", 0, 1_000);
     }
 
-    private static long cooldown(Long cooldownMs) {
-        long c = Validador.requerido(cooldownMs, "cooldownMs");
-        if (c < 0) {
-            throw new ValorInvalidoException("cooldownMs no puede ser negativo: " + c);
-        }
-        return c;
-    }
-
     private Inventario inventarioDeEjemplo() {
         Inventario inventario = new Inventario();
         inventario.agregar(new Pistola("Glock-18", 200, Equipo.TERRORISTAS, 30)); // constructor sobrecargado
         inventario.agregar(new Granada("HE Grenade", 300, Equipo.AMBOS, 98, 5.0f, 1.5f,
-                "Explosión de fragmentación", 3000));
+                "Explosión de fragmentación"));
         return inventario;
     }
 }

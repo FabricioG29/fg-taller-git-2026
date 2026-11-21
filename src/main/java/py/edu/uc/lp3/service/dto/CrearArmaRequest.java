@@ -46,6 +46,6 @@ public sealed interface CrearArmaRequest {
     }
 
     record GranadaRequest(String nombre, Integer precio, Equipo equipo, Integer danio, Float radioExplosion,
-                          Float tiempoActivacion, String efecto, Long cooldownMs) implements CrearArmaRequest {
+                          Float tiempoActivacion, String efecto) implements CrearArmaRequest {
     }
 }

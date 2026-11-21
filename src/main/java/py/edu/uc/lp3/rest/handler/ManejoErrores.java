@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import py.edu.uc.lp3exceptions.GranadaUsadaException;
 import py.edu.uc.lp3exceptions.JuegoException;
 import py.edu.uc.lp3exceptions.JugadorEliminadoException;
 import py.edu.uc.lp3exceptions.RecursoNoEncontradoException;
@@ -42,6 +43,12 @@ public class ManejoErrores {
     /** 409: el arma existe y el pedido es válido, pero su estado (cargador vacío) no lo permite. */
     @ExceptionHandler(SinMunicionException.class)
     public ResponseEntity<Map<String, Object>> sinMunicion(SinMunicionException e) {
+        return responder(HttpStatus.CONFLICT, e);
+    }
+
+    /** 409: la granada ya se lanzó; es un consumible de un solo uso. */
+    @ExceptionHandler(GranadaUsadaException.class)
+    public ResponseEntity<Map<String, Object>> granadaUsada(GranadaUsadaException e) {
         return responder(HttpStatus.CONFLICT, e);
     }
 
