@@ -19,6 +19,10 @@ public final class ApiPaths {
     public static final String REGLA_MUNICION = "/municion";
     public static final String REGLA_DANIO = "/danio";
 
+    // POO-09: escenario cruzado (consulta a A2 y A3)
+    public static final String ESCENARIO_GRANADA = "/api/escenarios/granada";
+    public static final String JUGADAS = "/api/escenarios/jugadas";
+
     /** Solo números: así /api/armas/pistola o /api/armas/tienda no se confunden con un id. */
     public static final String ID = "/{id:\\d+}";
 

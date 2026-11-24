@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import py.edu.uc.lp3.domain.Inspeccionable;
 import py.edu.uc.lp3.repository.ArmaRepository;
 import py.edu.uc.lp3.repository.DisparoRepository;
+import py.edu.uc.lp3.repository.JugadaRepository;
 import py.edu.uc.lp3.repository.JugadorRepository;
 import py.edu.uc.lp3.service.InspeccionService;
 import py.edu.uc.lp3.service.dto.FilaInspeccion;
@@ -23,12 +24,14 @@ public class InspeccionServiceImpl implements InspeccionService {
     private final ArmaRepository armaRepository;
     private final JugadorRepository jugadorRepository;
     private final DisparoRepository disparoRepository;
+    private final JugadaRepository jugadaRepository;
 
     public InspeccionServiceImpl(ArmaRepository armaRepository, JugadorRepository jugadorRepository,
-                                 DisparoRepository disparoRepository) {
+                                 DisparoRepository disparoRepository, JugadaRepository jugadaRepository) {
         this.armaRepository = armaRepository;
         this.jugadorRepository = jugadorRepository;
         this.disparoRepository = disparoRepository;
+        this.jugadaRepository = jugadaRepository;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class InspeccionServiceImpl implements InspeccionService {
         objetos.addAll(jugadorRepository.findAll());
         objetos.addAll(armaRepository.findAll());
         objetos.addAll(disparoRepository.findAll());
+        objetos.addAll(jugadaRepository.findAll());
 
         List<FilaInspeccion> filas = new ArrayList<>();
         for (Inspeccionable objeto : objetos) {

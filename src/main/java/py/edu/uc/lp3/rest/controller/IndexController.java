@@ -37,6 +37,8 @@ public class IndexController {
                 "GET " + ApiPaths.DISPAROS + "?objetivoId=",
                 "POST " + ApiPaths.REGLAS + ApiPaths.REGLA_MUNICION + "  (regla 1, sin estado)",
                 "POST " + ApiPaths.REGLAS + ApiPaths.REGLA_DANIO + "  (regla 2, sin estado)",
+                "POST " + ApiPaths.ESCENARIO_GRANADA + "  (escenario: consulta a A2 y A3)",
+                "GET " + ApiPaths.JUGADAS + "[/{id}]",
                 "GET " + ApiPaths.ARMAS + ApiPaths.PISTOLA
                         + "?nombre=&precio=&equipo=&danio=&precision=&cargador=&reserva=",
                 "GET " + ApiPaths.ARMAS + ApiPaths.COMPORTAMIENTOS,
