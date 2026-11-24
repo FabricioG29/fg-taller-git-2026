@@ -1,0 +1,6 @@
+### 05 POST jugador Compa (TERRORISTAS, mismo equipo que Fabri)
+POST http://localhost:8080/api/jugadores
+{"nombre": "Compa", "equipo": "TERRORISTAS"}
+
+{"id":3,"nombre":"Compa","equipo":"TERRORISTAS","vida":100,"armadura":100,"eliminado":false}
+-> HTTP 201

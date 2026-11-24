@@ -1,0 +1,6 @@
+### 23 POST regla daño: chaleco absorbe la mitad → 200
+POST http://localhost:8080/api/reglas/danio
+{"vida": 100, "armadura": 100, "danio": 36}
+
+{"danioRecibido":36,"absorbidoPorArmadura":18,"danioVida":18,"vidaRestante":82,"armaduraRestante":82,"eliminado":false}
+-> HTTP 200

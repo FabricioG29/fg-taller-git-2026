@@ -1,0 +1,6 @@
+### 04 POST jugador Rival (ANTITERRORISTAS)
+POST http://localhost:8080/api/jugadores
+{"nombre": "Rival", "equipo": "ANTITERRORISTAS"}
+
+{"id":2,"nombre":"Rival","equipo":"ANTITERRORISTAS","vida":100,"armadura":100,"eliminado":false}
+-> HTTP 201

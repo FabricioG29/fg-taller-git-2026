@@ -1,0 +1,6 @@
+### 06 POST granada HE #1
+POST http://localhost:8080/api/armas
+{"tipo": "granada", "nombre": "HE Grenade #1", "precio": 300, "equipo": "AMBOS", "danio": 98, "radioExplosion": 5.0, "tiempoActivacion": 1.5, "efecto": "Explosión de fragmentación"}
+
+{"tipo":"granada","id":1,"nombre":"HE Grenade #1","precio":300,"equipo":"AMBOS","danio":98,"tienda":"HE Grenade #1 (Granada) - $300 - AMBOS","radioExplosion":5.0,"tiempoActivacion":1.5,"efecto":"Explosión de fragmentación","letal":true,"usada":false}
+-> HTTP 201

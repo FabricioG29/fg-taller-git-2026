@@ -1,0 +1,5 @@
+### 15 GET jugadas → sigue 1
+GET http://localhost:8080/api/escenarios/jugadas
+
+[{"id":1,"momento":"2026-11-24T18:05:27.423144","atacanteId":1,"atacante":"Fabri","objetivoId":2,"objetivo":"Rival","granadaId":1,"granada":"HE Grenade #1","distancia":2.0,"factorDistanciaA2":0.75,"danioExplosion":74,"absorbidoPorArmadura":37,"danioVida":37,"vidaRestante":63,"armaduraRestante":63,"eliminado":false,"respuestaA2":"enRadioAlcance=true, danioNominal=98.0, danioAtenuadoDistancia=73.5","respuestaA3":"{\"idPersistidoH2\":4,\"idAgenteObjetivoPersistido\":2,\"explosivo\":\"Granada HE\",\"clasesParticipantes\":[\"AgenteCT (jerarquía Agente)\",\"GranadaHE (jerarquía Arma/Granada)\",\"Equipo\"],\"equipoAtacante\":\"Terrorista\",\"equipoObjetivo\":\"Counter-Terrorista\",\"agenteObjetivo\":\"Agente SAS (CT)\",\"vidaObjetivoAntes\":100,\"vidaObjetivoDespues\":65,\"chalecoRestanteObjetivo\":88,\"objetivoSigueVivo\":true,\"fuegoAmigoDetectado\":false,\"distanciaEpicentroMetros\":2.0,\"radioExplosionMetros\":5.0,\"tiempoExplosionSegundos\":1.5,\"o…"}]
+-> HTTP 200

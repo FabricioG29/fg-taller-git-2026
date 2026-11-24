@@ -1,0 +1,5 @@
+### 16 GET HE #2 → sigue sin usar
+GET http://localhost:8080/api/armas/2
+
+{"tipo":"granada","id":2,"nombre":"HE Grenade #2","precio":300,"equipo":"AMBOS","danio":98,"tienda":"HE Grenade #2 (Granada) - $300 - AMBOS","radioExplosion":5.0,"tiempoActivacion":1.5,"efecto":"Explosión de fragmentación","letal":true,"usada":false}
+-> HTTP 200

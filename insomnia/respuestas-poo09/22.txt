@@ -1,0 +1,6 @@
+### 22 POST regla munición: no alcanza → 409 SIN_MUNICION
+POST http://localhost:8080/api/reglas/municion
+{"cargador": 3, "disparos": 5}
+
+{"status":409,"error":"SIN_MUNICION","excepcion":"SinMunicionException","mensaje":"La ráfaga necesita 5 balas y el cargador tiene 3: hay que recargar"}
+-> HTTP 409

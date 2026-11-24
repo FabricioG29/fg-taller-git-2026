@@ -1,0 +1,6 @@
+### 18 POST lanzar otra vez la HE #1 en el escenario → 409 GRANADA_USADA
+POST http://localhost:8080/api/escenarios/granada
+{"atacanteId": 1, "objetivoId": 2, "granadaId": 1, "distancia": 2.0}
+
+{"status":409,"error":"GRANADA_USADA","excepcion":"GranadaUsadaException","mensaje":"HE Grenade #1 ya fue lanzada: una granada es de un solo uso"}
+-> HTTP 409

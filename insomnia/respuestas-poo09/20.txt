@@ -1,0 +1,6 @@
+### 20 POST simulación con la HE #3 otra vez → 409 GRANADA_USADA
+POST http://localhost:8080/api/simulaciones/disparos
+{"atacanteId": 1, "objetivoId": 2, "armaId": 3, "veces": 1}
+
+{"status":409,"error":"GRANADA_USADA","excepcion":"GranadaUsadaException","mensaje":"HE Grenade #3 ya fue lanzada: una granada es de un solo uso"}
+-> HTTP 409

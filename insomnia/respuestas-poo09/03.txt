@@ -1,0 +1,6 @@
+### 03 POST jugador Fabri (TERRORISTAS)
+POST http://localhost:8080/api/jugadores
+{"nombre": "Fabri", "equipo": "TERRORISTAS"}
+
+{"id":1,"nombre":"Fabri","equipo":"TERRORISTAS","vida":100,"armadura":100,"eliminado":false}
+-> HTTP 201

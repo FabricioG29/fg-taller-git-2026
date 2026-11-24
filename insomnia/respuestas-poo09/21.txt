@@ -1,0 +1,6 @@
+### 21 POST regla munición: alcanza → 200
+POST http://localhost:8080/api/reglas/municion
+{"cargador": 3, "disparos": 2}
+
+{"permitido":true,"cargadorAntes":3,"balasNecesarias":2,"cargadorDespues":1}
+-> HTTP 200

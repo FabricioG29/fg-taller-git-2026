@@ -1,0 +1,5 @@
+### 17 GET Compa → vida 100
+GET http://localhost:8080/api/jugadores/3
+
+{"id":3,"nombre":"Compa","equipo":"TERRORISTAS","vida":100,"armadura":100,"eliminado":false}
+-> HTTP 200

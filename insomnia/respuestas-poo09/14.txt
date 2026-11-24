@@ -1,0 +1,6 @@
+### 14 POST rechazo de A3: fuego amigo (Fabri → Compa) → 409 RECHAZO_A3
+POST http://localhost:8080/api/escenarios/granada
+{"atacanteId": 1, "objetivoId": 3, "granadaId": 2, "distancia": 2.0}
+
+{"status":409,"error":"RECHAZO_A3","excepcion":"RechazoDeCompaneroException","mensaje":"A3 (Diana Aquino) rechazó la jugada con HTTP 422: no se guardó nada","rol":"A3","companero":"Diana Aquino","urlConsultada":"http://localhost:8082/api/armas/granadas/simular?equipoAtacante=Terrorista&equipoObjetivo=Terrorista&distancia=2.0","statusCompanero":422,"respuestaCompanero":"{\"error\":\"Regla de fuego amigo violada\",\"tipoExcepcion\":\"FuegoAmigoException\",\"jerarquiaPadre\":\"ReglaDeJuegoException\",\"reglaViolada\":\"Regla de Fuego Amigo Competitivo CS2\",\"equipo\":\"Terrorista\",\"accionBloqueada\":\"Detonación de Granada HE contra aliado Agente Phoenix (T)\",\"mensaje\":\"Regla de negocio CS2: Fuego amigo bloqueado en modo competitivo. La granada y el agente objetivo pertenecen al mismo equipo en H2 ('Terrorista').\",\"estado\":422}","estadoH2":"SIN_CAMBIOS"}
+-> HTTP 409

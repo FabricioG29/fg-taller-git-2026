@@ -1,0 +1,5 @@
+### 11 GET Rival después de la jugada
+GET http://localhost:8080/api/jugadores/2
+
+{"id":2,"nombre":"Rival","equipo":"ANTITERRORISTAS","vida":63,"armadura":63,"eliminado":false}
+-> HTTP 200

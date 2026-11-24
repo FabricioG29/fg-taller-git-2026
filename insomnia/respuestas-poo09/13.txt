@@ -1,0 +1,6 @@
+### 13 POST rechazo de A2: distancia negativa → 409 RECHAZO_A2
+POST http://localhost:8080/api/escenarios/granada
+{"atacanteId": 1, "objetivoId": 2, "granadaId": 2, "distancia": -3.0}
+
+{"status":409,"error":"RECHAZO_A2","excepcion":"RechazoDeCompaneroException","mensaje":"A2 (Matias Enciso) rechazó la jugada con HTTP 400: no se guardó nada","rol":"A2","companero":"Matias Enciso","urlConsultada":"http://localhost:8081/api/simulacion/explosion?distancia=-3.0&conBlindaje=true&fuegoAmigo=false","statusCompanero":400,"respuestaCompanero":"{\"timestamp\":\"2026-11-24T18:05:27.567045395\",\"status\":400,\"tipoExcepcion\":\"ValidationException\",\"excepcionPadre\":\"ArmaException\",\"error\":\"Violación de Invariante de Dominio\",\"mensaje\":\"La distancia del impacto no puede ser negativa (recibido: -3.0m).\"}","estadoH2":"SIN_CAMBIOS"}
+-> HTTP 409

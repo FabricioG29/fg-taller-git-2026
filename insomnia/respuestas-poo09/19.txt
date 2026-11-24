@@ -1,0 +1,6 @@
+### 19 POST simulación con la HE #3 → 201
+POST http://localhost:8080/api/simulaciones/disparos
+{"atacanteId": 1, "objetivoId": 2, "armaId": 3, "veces": 1}
+
+{"atacante":{"id":1,"nombre":"Fabri","equipo":"TERRORISTAS","vida":100,"armadura":100,"eliminado":false},"objetivo":{"id":2,"nombre":"Rival","equipo":"ANTITERRORISTAS","vida":14,"armadura":14,"eliminado":false},"arma":{"tipo":"granada","id":3,"nombre":"HE Grenade #3","precio":300,"equipo":"AMBOS","danio":98,"tienda":"HE Grenade #3 (Granada) - $300 - AMBOS","radioExplosion":5.0,"tiempoActivacion":1.5,"efecto":"Explosión de fragmentación","letal":true,"usada":true},"disparos":[{"id":1,"momento":"2026-11-24T18:05:27.617222258","atacanteId":1,"atacante":"Fabri","objetivoId":2,"objetivo":"Rival","armaId":3,"arma":"HE Grenade #3","accion":"explota","danioArma":98,"absorbidoPorArmadura":49,"danioVida":49,"vidaRestante":14,"armaduraRestante":14,"eliminado":false,"detalle":"Explosión de fragmentación, radio 5.0 m, detona a los 1.5 s"}]}
+-> HTTP 201

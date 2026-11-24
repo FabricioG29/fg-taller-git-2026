@@ -1,0 +1,6 @@
+### 24 POST regla daño: jugador eliminado → 422
+POST http://localhost:8080/api/reglas/danio
+{"vida": 0, "armadura": 50, "danio": 10}
+
+{"status":422,"error":"JUGADOR_ELIMINADO","excepcion":"JugadorEliminadoException","mensaje":"El jugador ya está eliminado (vida 0): no puede recibir más daño"}
+-> HTTP 422
