@@ -1,0 +1,671 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-24T12:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v10.3.0",
+  "resources": [
+    {
+      "_id": "wrk_fg_poo09",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "fg-taller-git-2026 · POO-09 (CS2, A1 + A2 + A3)",
+      "description": "A1 = Fabricio González (:8080), A2 = Matias Enciso (:8081), A3 = Diana Aquino (:8082). Levantar los tres, borrar data/ de A1 y correr en orden. Las respuestas reales quedan en insomnia/respuestas-poo09/.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_fg9",
+      "_type": "environment",
+      "parentId": "wrk_fg_poo09",
+      "name": "Base Environment",
+      "data": {
+        "base_a1": "http://localhost:8080",
+        "base_a2": "http://localhost:8081",
+        "base_a3": "http://localhost:8082",
+        "rivalId": 2
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_a1",
+          "base_a2",
+          "base_a3",
+          "rivalId"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1
+    },
+    {
+      "_id": "fld9_1",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo09",
+      "name": "1. OpenAPI de A1, A2 y A3",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 100
+    },
+    {
+      "_id": "fld9_2",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo09",
+      "name": "2. Preparar (base vacía)",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 200
+    },
+    {
+      "_id": "fld9_3",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo09",
+      "name": "3. Escenario: caso feliz",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 300
+    },
+    {
+      "_id": "fld9_4",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo09",
+      "name": "4. Escenario: rechazos (H2 no cambia)",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 400
+    },
+    {
+      "_id": "fld9_5",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo09",
+      "name": "5. Corrección POO-08: granada de un solo uso",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 500
+    },
+    {
+      "_id": "fld9_6",
+      "_type": "request_group",
+      "parentId": "wrk_fg_poo09",
+      "name": "6. Mis dos reglas (las que consultan mis compañeros)",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 600
+    },
+    {
+      "_id": "req9_00",
+      "_type": "request",
+      "parentId": "fld9_1",
+      "name": "00 GET OpenAPI propio (A1)",
+      "description": "200 con \"openapi\":\"3.1.0\". Las mismas operaciones se ven en {{ _.base_a1 }}/swagger-ui.html.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/v3/api-docs",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_01",
+      "_type": "request",
+      "parentId": "fld9_1",
+      "name": "01 GET OpenAPI de A2 (Matias Enciso)",
+      "description": "Comprueba que A2 está levantado. Regla que consulto: GET /api/simulacion/explosion.",
+      "method": "GET",
+      "url": "{{ _.base_a2 }}/v3/api-docs",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 20,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_02",
+      "_type": "request",
+      "parentId": "fld9_1",
+      "name": "02 GET OpenAPI de A3 (Diana Aquino)",
+      "description": "Comprueba que A3 está levantado. Regla que consulto: POST /api/armas/granadas/simular.",
+      "method": "GET",
+      "url": "{{ _.base_a3 }}/v3/api-docs",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 30,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_03",
+      "_type": "request",
+      "parentId": "fld9_2",
+      "name": "03 POST jugador Fabri (TERRORISTAS)",
+      "description": "201, id 1.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 40,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Fabri\",\n  \"equipo\": \"TERRORISTAS\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_04",
+      "_type": "request",
+      "parentId": "fld9_2",
+      "name": "04 POST jugador Rival (ANTITERRORISTAS)",
+      "description": "201, id 2. Vida 100, chaleco 100.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 50,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Rival\",\n  \"equipo\": \"ANTITERRORISTAS\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_05",
+      "_type": "request",
+      "parentId": "fld9_2",
+      "name": "05 POST jugador Compa (TERRORISTAS, mismo equipo que Fabri)",
+      "description": "201, id 3. Sirve para el rechazo de A3 por fuego amigo.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/jugadores",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 60,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nombre\": \"Compa\",\n  \"equipo\": \"TERRORISTAS\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_06",
+      "_type": "request",
+      "parentId": "fld9_2",
+      "name": "06 POST granada HE #1",
+      "description": "201, id 1. \"usada\": false.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 70,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"granada\",\n  \"nombre\": \"HE Grenade #1\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 98,\n  \"radioExplosion\": 5.0,\n  \"tiempoActivacion\": 1.5,\n  \"efecto\": \"Explosión de fragmentación\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_07",
+      "_type": "request",
+      "parentId": "fld9_2",
+      "name": "07 POST granada HE #2",
+      "description": "201, id 2. \"usada\": false.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 80,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"granada\",\n  \"nombre\": \"HE Grenade #2\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 98,\n  \"radioExplosion\": 5.0,\n  \"tiempoActivacion\": 1.5,\n  \"efecto\": \"Explosión de fragmentación\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_08",
+      "_type": "request",
+      "parentId": "fld9_2",
+      "name": "08 POST granada HE #3",
+      "description": "201, id 3. \"usada\": false.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/armas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 90,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tipo\": \"granada\",\n  \"nombre\": \"HE Grenade #3\",\n  \"precio\": 300,\n  \"equipo\": \"AMBOS\",\n  \"danio\": 98,\n  \"radioExplosion\": 5.0,\n  \"tiempoActivacion\": 1.5,\n  \"efecto\": \"Explosión de fragmentación\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_09",
+      "_type": "request",
+      "parentId": "fld9_3",
+      "name": "09 POST escenario: Fabri lanza la HE #1 a Rival a 2 m → 201",
+      "description": "A2 acepta (200, daño atenuado por la distancia) y A3 acepta (200, equipos distintos y dentro de 35 m). Se guarda la jugada: 201 con danioExplosion = 98 × (danioAtenuadoDistancia / danioNominal de A2), el chaleco absorbe la mitad, \"respuestaA2\" y \"respuestaA3\" con lo que contestó cada uno.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/escenarios/granada",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": 1,\n  \"objetivoId\": 2,\n  \"granadaId\": 1,\n  \"distancia\": 2.0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_10",
+      "_type": "request",
+      "parentId": "fld9_3",
+      "name": "10 GET jugadas guardadas → 1",
+      "description": "La jugada del 09 aparece en H2.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/api/escenarios/jugadas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 110,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_11",
+      "_type": "request",
+      "parentId": "fld9_3",
+      "name": "11 GET Rival después de la jugada",
+      "description": "Vida y chaleco bajaron según la jugada.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/api/jugadores/{{ _.rivalId }}",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 120,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_12",
+      "_type": "request",
+      "parentId": "fld9_3",
+      "name": "12 GET HE #1 → usada",
+      "description": "\"usada\": true.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/api/armas/1",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 130,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_13",
+      "_type": "request",
+      "parentId": "fld9_4",
+      "name": "13 POST rechazo de A2: distancia negativa → 409 RECHAZO_A2",
+      "description": "A2 responde 400 (distancia negativa). A1 responde 409 con \"error\":\"RECHAZO_A2\", \"rol\":\"A2\", \"statusCompanero\":400, \"estadoH2\":\"SIN_CAMBIOS\". A3 no se consulta.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/escenarios/granada",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 140,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": 1,\n  \"objetivoId\": 2,\n  \"granadaId\": 2,\n  \"distancia\": -3.0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_14",
+      "_type": "request",
+      "parentId": "fld9_4",
+      "name": "14 POST rechazo de A3: fuego amigo (Fabri → Compa) → 409 RECHAZO_A3",
+      "description": "A2 acepta (200) pero A3 responde 422 FuegoAmigoException. A1 responde 409 con \"error\":\"RECHAZO_A3\", \"rol\":\"A3\", \"statusCompanero\":422, \"estadoH2\":\"SIN_CAMBIOS\".",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/escenarios/granada",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 150,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": 1,\n  \"objetivoId\": 3,\n  \"granadaId\": 2,\n  \"distancia\": 2.0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_15",
+      "_type": "request",
+      "parentId": "fld9_4",
+      "name": "15 GET jugadas → sigue 1",
+      "description": "Los rechazos no guardaron nada.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/api/escenarios/jugadas",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 160,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_16",
+      "_type": "request",
+      "parentId": "fld9_4",
+      "name": "16 GET HE #2 → sigue sin usar",
+      "description": "\"usada\": false: no se gastó.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/api/armas/2",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 170,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_17",
+      "_type": "request",
+      "parentId": "fld9_4",
+      "name": "17 GET Compa → vida 100",
+      "description": "Vida 100 y chaleco 100: no recibió daño.",
+      "method": "GET",
+      "url": "{{ _.base_a1 }}/api/jugadores/3",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 180,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req9_18",
+      "_type": "request",
+      "parentId": "fld9_5",
+      "name": "18 POST lanzar otra vez la HE #1 en el escenario → 409 GRANADA_USADA",
+      "description": "Regla propia, antes de consultar a A2/A3: 409 GRANADA_USADA (GranadaUsadaException).",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/escenarios/granada",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 190,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": 1,\n  \"objetivoId\": 2,\n  \"granadaId\": 1,\n  \"distancia\": 2.0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_19",
+      "_type": "request",
+      "parentId": "fld9_5",
+      "name": "19 POST simulación con la HE #3 → 201",
+      "description": "La granada explota una vez.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/simulaciones/disparos",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": 1,\n  \"objetivoId\": 2,\n  \"armaId\": 3,\n  \"veces\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_20",
+      "_type": "request",
+      "parentId": "fld9_5",
+      "name": "20 POST simulación con la HE #3 otra vez → 409 GRANADA_USADA",
+      "description": "Un consumible no se usa dos veces: 409 GRANADA_USADA. No tiene cooldown ni recarga.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/simulaciones/disparos",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 210,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"atacanteId\": 1,\n  \"objetivoId\": 2,\n  \"armaId\": 3,\n  \"veces\": 1\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_21",
+      "_type": "request",
+      "parentId": "fld9_6",
+      "name": "21 POST regla munición: alcanza → 200",
+      "description": "{\"permitido\":true,\"cargadorAntes\":3,\"balasNecesarias\":2,\"cargadorDespues\":1}",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/reglas/municion",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 220,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cargador\": 3,\n  \"disparos\": 2\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_22",
+      "_type": "request",
+      "parentId": "fld9_6",
+      "name": "22 POST regla munición: no alcanza → 409 SIN_MUNICION",
+      "description": "409 SIN_MUNICION.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/reglas/municion",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 230,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cargador\": 3,\n  \"disparos\": 5\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_23",
+      "_type": "request",
+      "parentId": "fld9_6",
+      "name": "23 POST regla daño: chaleco absorbe la mitad → 200",
+      "description": "vidaRestante 82, armaduraRestante 82.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/reglas/danio",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 240,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"vida\": 100,\n  \"armadura\": 100,\n  \"danio\": 36\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req9_24",
+      "_type": "request",
+      "parentId": "fld9_6",
+      "name": "24 POST regla daño: jugador eliminado → 422",
+      "description": "422 JUGADOR_ELIMINADO.",
+      "method": "POST",
+      "url": "{{ _.base_a1 }}/api/reglas/danio",
+      "parameters": [],
+      "authentication": {},
+      "metaSortKey": 250,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingFollowRedirects": "global",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"vida\": 0,\n  \"armadura\": 50,\n  \"danio\": 10\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ]
+}
