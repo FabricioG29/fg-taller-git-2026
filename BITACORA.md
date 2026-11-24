@@ -32,6 +32,16 @@
 7. **Insomnia y README.** Le pedí la colección con el orden de prueba y un pedido por cada error, el diagrama Mermaid actualizado y las respuestas a "Qué hay que pensar".
 8. **Commits.** Le pedí separar el trabajo en commits por parte (propiedades, excepciones, entidades, repositorios, CRUD, simulación, Insomnia, README).
 
+## Resumen de los prompts — POO-09 (APIs cruzadas, OpenAPI y corrección de POO-08)
+
+1. **Corrección de POO-08.** Le pasé la nota de POO-08 (criterio 2 con 1 y criterio 3 con 0) y le pedí cerrar cada observación: services para que ningún controller use un repositorio; validaciones, reglas y excepciones fuera del dominio (quedaron en `ArmaService`, `JugadorService` y `ReglasDeJuegoService`); y la granada como consumible de un solo uso, sin cooldown, con su propia excepción 409 controlada en el service.
+2. **Revisión punto por punto.** Le volví a pasar el texto de la corrección y le pregunté si cada ítem estaba cerrado; me mostró dónde quedó cada cosa en el código.
+3. **OpenAPI.** Le pregunté cómo publicar OpenAPI 3 en Spring Boot 4; usamos springdoc (línea 3.x) con ejemplos de cada error, y publiqué mis dos reglas sin estado (`/api/reglas/municion` y `/api/reglas/danio`) para que las consulten mis compañeros.
+4. **Mensaje al grupo.** Le pedí qué tenía que mandarles a mis compañeros (repo, OpenAPI, puertos y mis reglas con ejemplos).
+5. **Clientes y escenario.** Le pasé lo que me mandaron Diana Aquino y Matias Enciso (sus URLs, rutas y reglas) y le pedí los clientes hacia A2 y A3 leyendo solo su README y su OpenAPI, sin copiar su código, y un escenario de CS2 que necesite las dos validaciones: «lanzar una granada a un rival».
+6. **Orden y errores.** Le pregunté en qué orden consultar y cómo atribuir el rechazo; quedó A2 (Matias, daño por distancia) antes que A3 (Diana, fuego amigo y alcance), con 409 `RECHAZO_A2`/`RECHAZO_A3` y 503 si alguno no responde.
+7. **Insomnia, README y commits.** Le pedí la colección con las tres bases, el recorrido con curl que guarda las respuestas de ejemplo, el README con el mapa del grupo y las respuestas de «Qué hay que pensar», y commits separados por parte.
+
 ## Qué hice yo
 
 - Ejecuté cada paso en la VM (Ubuntu) desde la terminal del Mac por SSH: clonado, generación del proyecto, compilación, commits y push.
@@ -39,3 +49,4 @@
 - Revisé que el diagrama Mermaid se dibujara en GitHub y que coincidiera con el código.
 - Decidí el dominio (CS2) y el diagrama de partida, y elegí qué ajustes del diagrama aceptar.
 - En POO-08 apliqué los commits en la VM, arranqué el servicio, recorrí la colección de Insomnia contra mi servicio y revisé las tablas en la consola de H2.
+- En POO-09 apliqué los commits en la VM, corrí `./mvnw test`, probé el OpenAPI y las reglas con `curl`, coordiné con Diana y Matias los puertos y las reglas que nos consultamos, levanté los tres servicios y corrí el recorrido del escenario (feliz, rechazo de A2 y rechazo de A3).
