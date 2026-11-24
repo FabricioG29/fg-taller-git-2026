@@ -8,9 +8,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import py.edu.uc.lp3exceptions.CompaneroException;
+import py.edu.uc.lp3exceptions.CompaneroNoDisponibleException;
 import py.edu.uc.lp3exceptions.GranadaUsadaException;
 import py.edu.uc.lp3exceptions.JuegoException;
 import py.edu.uc.lp3exceptions.JugadorEliminadoException;
+import py.edu.uc.lp3exceptions.RechazoDeCompaneroException;
 import py.edu.uc.lp3exceptions.RecursoNoEncontradoException;
 import py.edu.uc.lp3exceptions.SinMunicionException;
 import py.edu.uc.lp3exceptions.ValorInvalidoException;
@@ -55,6 +58,18 @@ public class ManejoErrores {
         return responder(HttpStatus.UNPROCESSABLE_ENTITY, e);
     }
 
+    /** 409: la regla de A2 o de A3 no acepta la jugada; se atribuye a quien la rechazó. */
+    @ExceptionHandler(RechazoDeCompaneroException.class)
+    public ResponseEntity<RechazoRespuesta> rechazoDeCompanero(RechazoDeCompaneroException e) {
+        return responderCompanero(HttpStatus.CONFLICT, e);
+    }
+
+    /** 503: A2 o A3 no respondió (apagado, timeout, 5xx o ruta inexistente). */
+    @ExceptionHandler(CompaneroNoDisponibleException.class)
+    public ResponseEntity<RechazoRespuesta> companeroNoDisponible(CompaneroNoDisponibleException e) {
+        return responderCompanero(HttpStatus.SERVICE_UNAVAILABLE, e);
+    }
+
     /** 400: JSON mal formado, "tipo" desconocido o un enum inexistente (no llega al dominio). */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorRespuesta> jsonIlegible(HttpMessageNotReadableException e) {
@@ -67,6 +82,13 @@ public class ManejoErrores {
     private ResponseEntity<ErrorRespuesta> responder(HttpStatus status, JuegoException e) {
         ErrorRespuesta cuerpo = new ErrorRespuesta(status.value(), e.getCodigo(),
                 e.getClass().getSimpleName(), e.getMessage());
+        return ResponseEntity.status(status).contentType(JSON_UTF8).body(cuerpo);
+    }
+
+    private ResponseEntity<RechazoRespuesta> responderCompanero(HttpStatus status, CompaneroException e) {
+        RechazoRespuesta cuerpo = new RechazoRespuesta(status.value(), e.getCodigo(), e.getClass().getSimpleName(),
+                e.getMessage(), e.getRol(), e.getCompanero(), e.getUrlConsultada(), e.getStatusCompanero(),
+                e.getRespuestaCompanero(), "SIN_CAMBIOS");
         return ResponseEntity.status(status).contentType(JSON_UTF8).body(cuerpo);
     }
 }
